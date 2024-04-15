@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { TMDB, type TV } from 'tmdb-ts';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 
 const bearerStore = useBearerStore();
@@ -9,6 +9,8 @@ const bearerStore = useBearerStore();
 const tmdb = new TMDB(bearerStore.bearer);
 
 const showsList = ref<TV[]>([]);
+
+const minPopularity = ref(0);
 
 async function getShows() {
 	const shows = await tmdb.discover.tvShow({
@@ -24,12 +26,24 @@ async function getShows() {
 		sort_by: 'first_air_date.asc',
 	});
 
-	showsList.value = shows.results.filter((show) => {
-		return show.poster_path !== null;
-	});
+	showsList.value = shows.results;
 
 	console.log(shows.results);
 }
+
+const filteredShows = computed(() => {
+	return showsList.value.filter((show) => {
+		if (show.poster_path === null) {
+			return false;
+		}
+
+		if (show.popularity < minPopularity.value) {
+			return false;
+		}
+
+		return true;
+	});
+});
 
 getShows();
 </script>
@@ -38,8 +52,11 @@ getShows();
 	<div>
 		<h1>TV Shows</h1>
 
+		<label for="popularity">Min. popularity</label>
+		<input type="number" id="popularity" v-model="minPopularity" />
+
 		<div class="flex flex-wrap gap-5">
-			<ShowCard v-for="show in showsList" :show="show" />
+			<ShowCard v-for="show in filteredShows" :show="show" />
 		</div>
 	</div>
 </template>
