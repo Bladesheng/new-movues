@@ -5,9 +5,10 @@ import { RouterLink, RouterView } from 'vue-router';
 <template>
 	<header>
 		<div class="wrapper">
-			<nav>
-				<RouterLink to="/">Home</RouterLink>
-				<RouterLink to="/about">About</RouterLink>
+			<nav class="flex gap-1">
+				<RouterLink :to="{ name: 'home' }">Home</RouterLink>
+				<RouterLink :to="{ name: 'about' }">About</RouterLink>
+				<RouterLink :to="{ name: 'settings' }">Settings</RouterLink>
 			</nav>
 		</div>
 	</header>
