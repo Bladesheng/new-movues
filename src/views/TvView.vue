@@ -24,7 +24,9 @@ async function getShows() {
 		sort_by: 'first_air_date.asc',
 	});
 
-	showsList.value = shows.results;
+	showsList.value = shows.results.filter((show) => {
+		return show.poster_path !== null;
+	});
 
 	console.log(shows.results);
 }

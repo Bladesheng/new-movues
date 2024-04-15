@@ -31,7 +31,7 @@ const daysUntilAir = computed(() => {
 
 		<div>in {{ daysUntilAir }} days</div>
 
-		<img :src="`https://image.tmdb.org/t/p/w300${props.show?.backdrop_path}`" alt="" />
+		<img :src="`https://image.tmdb.org/t/p/w200${props.show?.poster_path}`" alt="" />
 	</div>
 </template>
 
