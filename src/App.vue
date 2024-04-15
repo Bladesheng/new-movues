@@ -7,6 +7,7 @@ import { RouterLink, RouterView } from 'vue-router';
 		<div class="wrapper">
 			<nav class="flex gap-1">
 				<RouterLink :to="{ name: 'home' }">Home</RouterLink>
+				<RouterLink :to="{ name: 'tv' }">TV Shows</RouterLink>
 				<RouterLink :to="{ name: 'about' }">About</RouterLink>
 				<RouterLink :to="{ name: 'settings' }">Settings</RouterLink>
 			</nav>

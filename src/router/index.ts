@@ -22,6 +22,12 @@ const router = createRouter({
 			name: 'settings',
 			component: () => import('../views/SettingsView.vue'),
 		},
+
+		{
+			path: '/tv',
+			name: 'tv',
+			component: () => import('../views/TvView.vue'),
+		},
 	],
 });
 
