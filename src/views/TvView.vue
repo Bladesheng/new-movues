@@ -10,31 +10,38 @@ const tmdb = new TMDB(bearerStore.bearer);
 
 const showsList = ref<TV[]>([]);
 const minPopularity = ref(0);
-const page = ref(1);
+const currentPage = ref(1);
+const totalPages = ref(99);
 
 async function loadMoreShows() {
-	page.value++;
+	if (currentPage.value >= totalPages.value) {
+		return;
+	}
+
+	currentPage.value++;
 
 	await getShows();
 }
 
 async function getShows() {
-	const shows = await tmdb.discover.tvShow({
+	const showsResponse = await tmdb.discover.tvShow({
 		// since yesterday
 		'first_air_date.gte': new Date(Date.now() - 86400000).toISOString(),
 
 		include_null_first_air_dates: false,
 		language: 'en-US',
 		with_original_language: 'en',
-		page: page.value,
+		page: currentPage.value,
 
 		//@ts-ignore
 		sort_by: 'first_air_date.asc',
 	});
 
-	showsList.value.push(...shows.results);
+	totalPages.value = showsResponse.total_pages;
 
-	console.log(shows.results);
+	showsList.value.push(...showsResponse.results);
+
+	console.log(showsResponse.results);
 }
 
 const filteredShows = computed(() => {
