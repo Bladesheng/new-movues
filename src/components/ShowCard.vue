@@ -17,6 +17,21 @@ const daysUntilAir = computed(() => {
 
 	return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
 });
+
+const dateLocaleFormatted = computed(() => {
+	const date = new Date(props.show.first_air_date);
+
+	// @TODO add locale override to settings
+	// const locale = navigator.language;
+	const locale = 'cs-CZ';
+
+	return date.toLocaleDateString(locale, {
+		weekday: 'long',
+		day: 'numeric',
+		month: 'numeric',
+		year: 'numeric',
+	});
+});
 </script>
 
 <template>
@@ -37,7 +52,7 @@ const daysUntilAir = computed(() => {
 			<span class="group-hover:hidden">in {{ daysUntilAir }} days</span>
 
 			<span class="hidden group-hover:inline">
-				{{ show.first_air_date }}
+				{{ dateLocaleFormatted }}
 			</span>
 		</div>
 
