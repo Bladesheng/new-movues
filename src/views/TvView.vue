@@ -104,10 +104,16 @@ async function infiniteScrollListener() {
 		<label for="popularity">Min. popularity</label>
 		<input type="number" id="popularity" v-model="minPopularity" />
 
-		<div class="flex flex-wrap gap-5">
+		<div class="grid gap-4">
 			<ShowCard v-for="show in filteredShows" :show="show" />
 		</div>
 
 		<div v-if="isLoadingMore">LOADING SPINNER</div>
 	</div>
 </template>
+
+<style scoped>
+.grid {
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+</style>
