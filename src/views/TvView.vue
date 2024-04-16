@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { TMDB, type TV } from 'tmdb-ts';
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 
 const bearerStore = useBearerStore();
@@ -10,8 +10,47 @@ const tmdb = new TMDB(bearerStore.bearer);
 
 const showsList = ref<TV[]>([]);
 const minPopularity = ref(0);
-const currentPage = ref(1);
+const currentPage = ref(0);
 const totalPages = ref(99);
+const isLoadingMore = ref(false);
+
+const filteredShows = computed(() => {
+	return showsList.value.filter((show) => {
+		if (show.poster_path === null) {
+			return false;
+		}
+
+		if (show.popularity < minPopularity.value) {
+			return false;
+		}
+
+		return true;
+	});
+});
+
+onMounted(async () => {
+	window.addEventListener('scroll', infiniteScrollListener);
+
+	await loadMoreShows();
+
+	await checkIfMoreExist();
+
+	async function checkIfMoreExist() {
+		const { scrollHeight, clientHeight } = document.documentElement;
+		const scrollbarExists = scrollHeight > clientHeight;
+		const morePagesExists = currentPage.value < totalPages.value;
+
+		if (!scrollbarExists && morePagesExists) {
+			await loadMoreShows();
+
+			await checkIfMoreExist();
+		}
+	}
+});
+
+onUnmounted(() => {
+	window.removeEventListener('scroll', infiniteScrollListener);
+});
 
 async function loadMoreShows() {
 	if (currentPage.value >= totalPages.value) {
@@ -44,21 +83,18 @@ async function getShows() {
 	console.log(showsResponse.results);
 }
 
-const filteredShows = computed(() => {
-	return showsList.value.filter((show) => {
-		if (show.poster_path === null) {
-			return false;
-		}
+async function infiniteScrollListener() {
+	const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+	const nearBottom = scrollTop + clientHeight >= scrollHeight - 400;
 
-		if (show.popularity < minPopularity.value) {
-			return false;
-		}
+	if (nearBottom && !isLoadingMore.value) {
+		isLoadingMore.value = true;
 
-		return true;
-	});
-});
+		await loadMoreShows();
 
-getShows();
+		isLoadingMore.value = false;
+	}
+}
 </script>
 
 <template>
@@ -72,6 +108,6 @@ getShows();
 			<ShowCard v-for="show in filteredShows" :show="show" />
 		</div>
 
-		<button @click="loadMoreShows">Show more</button>
+		<div v-if="isLoadingMore">LOADING SPINNER</div>
 	</div>
 </template>
