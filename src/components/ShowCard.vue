@@ -15,7 +15,18 @@ const daysUntilAir = computed(() => {
 
 	const diff = firstAirDate.getTime() - now.getTime();
 
-	return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+	const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+
+	switch (daysLeft) {
+		case -1:
+			return 'Yesterday';
+		case 0:
+			return 'Today';
+		case 1:
+			return 'Tomorrow';
+		default:
+			return `in ${daysLeft} days`;
+	}
 });
 
 const dateLocaleFormatted = computed(() => {
@@ -49,7 +60,7 @@ const dateLocaleFormatted = computed(() => {
 		</div>
 
 		<div class="absolute left-0 top-0 rounded-br bg-black bg-opacity-50 px-1 py-0.5 text-white">
-			<span class="group-hover:hidden">in {{ daysUntilAir }} days</span>
+			<span class="group-hover:hidden">{{ daysUntilAir }}</span>
 
 			<span class="hidden group-hover:inline">
 				{{ dateLocaleFormatted }}
