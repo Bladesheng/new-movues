@@ -9,8 +9,14 @@ const bearerStore = useBearerStore();
 const tmdb = new TMDB(bearerStore.bearer);
 
 const showsList = ref<TV[]>([]);
-
 const minPopularity = ref(0);
+const page = ref(1);
+
+async function loadMoreShows() {
+	page.value++;
+
+	await getShows();
+}
 
 async function getShows() {
 	const shows = await tmdb.discover.tvShow({
@@ -20,13 +26,13 @@ async function getShows() {
 		include_null_first_air_dates: false,
 		language: 'en-US',
 		with_original_language: 'en',
-		page: 1,
+		page: page.value,
 
 		//@ts-ignore
 		sort_by: 'first_air_date.asc',
 	});
 
-	showsList.value = shows.results;
+	showsList.value.push(...shows.results);
 
 	console.log(shows.results);
 }
@@ -58,5 +64,7 @@ getShows();
 		<div class="flex flex-wrap gap-5">
 			<ShowCard v-for="show in filteredShows" :show="show" />
 		</div>
+
+		<button @click="loadMoreShows">Show more</button>
 	</div>
 </template>

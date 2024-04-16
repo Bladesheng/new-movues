@@ -20,7 +20,7 @@ const daysUntilAir = computed(() => {
 </script>
 
 <template>
-	<div>
+	<div class="overflow-hidden rounded">
 		<div>
 			{{ show.name }}
 		</div>
