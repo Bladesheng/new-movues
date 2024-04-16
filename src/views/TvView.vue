@@ -108,7 +108,8 @@ async function infiniteScrollListener() {
 			<ShowCard v-for="show in filteredShows" :show="show" />
 		</div>
 
-		<div v-if="isLoadingMore">LOADING SPINNER</div>
+		<div v-if="isLoadingMore">@TODO LOADING SPINNER</div>
+		<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
 	</div>
 </template>
 
