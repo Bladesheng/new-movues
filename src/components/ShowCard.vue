@@ -68,6 +68,14 @@ const dateLocaleFormatted = computed(() => {
 		</div>
 
 		<div
+			class="absolute right-0 top-0 hidden rounded-bl bg-black bg-opacity-50 px-1 py-0.5 text-white group-hover:inline"
+			title="Popularity"
+		>
+			📈
+			{{ Math.round(props.show.popularity) }}
+		</div>
+
+		<div
 			class="flex h-12 flex-grow items-center justify-center text-center"
 			:title="props.show.name"
 		>
