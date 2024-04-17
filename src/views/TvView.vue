@@ -105,6 +105,22 @@ async function checkIfMoreExist() {
 		await checkIfMoreExist();
 	}
 }
+
+function onWheel(e: WheelEvent) {
+	if (e.deltaY > 0) {
+		minPopularity.value -= 5;
+	} else {
+		minPopularity.value += 5;
+	}
+
+	if (minPopularity.value < 0) {
+		minPopularity.value = 0;
+	}
+
+	if (minPopularity.value > 100) {
+		minPopularity.value = 100;
+	}
+}
 </script>
 
 <template>
@@ -112,7 +128,7 @@ async function checkIfMoreExist() {
 		<h1>TV Shows</h1>
 
 		<label for="popularity">Min. popularity</label>
-		<input type="range" v-model.number="minPopularity" min="0" max="100" />
+		<input type="range" v-model.number="minPopularity" min="0" max="100" @wheel.prevent="onWheel" />
 		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
