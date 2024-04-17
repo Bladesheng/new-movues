@@ -1,15 +1,15 @@
 import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 
-export const useBearerStore = defineStore('bearer', () => {
-	const STORAGE_NAME = 'bearer';
+const STORE_NAME = 'bearer';
 
-	const storage = localStorage.getItem(STORAGE_NAME);
+export const useBearerStore = defineStore(STORE_NAME, () => {
+	const storage = localStorage.getItem(STORE_NAME);
 
 	const bearer = ref<string>(storage ?? '');
 
-	watch(bearer, (newBearer) => {
-		localStorage.setItem(STORAGE_NAME, newBearer);
+	watch(bearer, (newValue) => {
+		localStorage.setItem(STORE_NAME, newValue);
 	});
 
 	return { bearer };
