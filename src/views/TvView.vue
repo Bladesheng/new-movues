@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { TMDB, type TV } from 'tmdb-ts';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 
 const bearerStore = useBearerStore();
@@ -31,28 +31,24 @@ const filteredShows = computed(() => {
 onMounted(async () => {
 	window.addEventListener('scroll', infiniteScrollListener);
 
-	await loadMoreShows();
+	await loadNextPage();
 
-	await checkIfMoreExist();
-
-	async function checkIfMoreExist() {
-		const { scrollHeight, clientHeight } = document.documentElement;
-		const scrollbarExists = scrollHeight > clientHeight;
-		const morePagesExists = currentPage.value < totalPages.value;
-
-		if (!scrollbarExists && morePagesExists) {
-			await loadMoreShows();
-
+	watch(
+		minPopularity,
+		async () => {
 			await checkIfMoreExist();
+		},
+		{
+			immediate: true,
 		}
-	}
+	);
 });
 
 onUnmounted(() => {
 	window.removeEventListener('scroll', infiniteScrollListener);
 });
 
-async function loadMoreShows() {
+async function loadNextPage() {
 	if (currentPage.value >= totalPages.value) {
 		return;
 	}
@@ -90,9 +86,21 @@ async function infiniteScrollListener() {
 	if (nearBottom && !isLoadingMore.value) {
 		isLoadingMore.value = true;
 
-		await loadMoreShows();
+		await loadNextPage();
 
 		isLoadingMore.value = false;
+	}
+}
+
+async function checkIfMoreExist() {
+	const { scrollHeight, clientHeight } = document.documentElement;
+	const scrollbarExists = scrollHeight > clientHeight;
+	const morePagesExists = currentPage.value < totalPages.value;
+
+	if (!scrollbarExists && morePagesExists) {
+		await loadNextPage();
+
+		await checkIfMoreExist();
 	}
 }
 </script>
@@ -103,6 +111,7 @@ async function infiniteScrollListener() {
 
 		<label for="popularity">Min. popularity</label>
 		<input type="number" id="popularity" v-model="minPopularity" />
+		<input type="range" v-model="minPopularity" min="0" max="100" />
 
 		<div class="grid gap-4">
 			<ShowCard v-for="show in filteredShows" :show="show" />
