@@ -76,7 +76,7 @@ const dateLocaleFormatted = computed(() => {
 		</div>
 
 		<div
-			class="flex h-12 flex-grow items-center justify-center text-center"
+			class="flex h-12 flex-grow items-center justify-center text-center text-sm"
 			:title="props.show.name"
 		>
 			{{ props.show.name }}
