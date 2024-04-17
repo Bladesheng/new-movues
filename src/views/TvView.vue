@@ -3,10 +3,11 @@ import { useBearerStore } from '@/stores/bearer';
 import { TMDB, type TV } from 'tmdb-ts';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
-import { useMinPopularityStore } from '@/stores/minPopularity';
+import { useStorage } from '@vueuse/core';
 
 const bearerStore = useBearerStore();
-const minPopularityStore = useMinPopularityStore();
+
+const minPopularity = useStorage('minPopularity', 0);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
@@ -21,7 +22,7 @@ const filteredShows = computed(() => {
 			return false;
 		}
 
-		if (show.popularity < minPopularityStore.minPopularity) {
+		if (show.popularity < minPopularity.value) {
 			return false;
 		}
 
@@ -35,7 +36,7 @@ onMounted(async () => {
 	await loadNextPage();
 
 	watch(
-		minPopularityStore,
+		minPopularity,
 		async () => {
 			await checkIfMoreExist();
 		},
@@ -111,8 +112,8 @@ async function checkIfMoreExist() {
 		<h1>TV Shows</h1>
 
 		<label for="popularity">Min. popularity</label>
-		<input type="range" v-model.number="minPopularityStore.minPopularity" min="0" max="100" />
-		<input type="number" id="popularity" v-model="minPopularityStore.minPopularity" />
+		<input type="range" v-model.number="minPopularity" min="0" max="100" />
+		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
 			<ShowCard v-for="show in filteredShows" :show="show" />
