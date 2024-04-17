@@ -47,7 +47,7 @@ const dateLocaleFormatted = computed(() => {
 
 <template>
 	<a
-		class="group relative flex flex-col overflow-hidden rounded border border-gray-300"
+		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 visited:text-gray-400"
 		:href="`https://www.themoviedb.org/tv/${props.show.id}`"
 		target="_blank"
 	>
