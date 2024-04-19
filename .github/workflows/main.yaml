@@ -18,8 +18,12 @@ concurrency:
 
 jobs:
   job-1:
-    name: Build
+    name: Build and deploy
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      deployments: write
 
     steps:
       - name: Check out the repo
@@ -42,33 +46,11 @@ jobs:
       - name: Build Application
         run: pnpm run build-only
 
-      - name: Upload static files artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-          name: build-artifact
-
-  # How to get the credentials
-  # https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/#get-credentials-from-cloudflare
-  # Note: there cannot be top level 404.html or SPA rendering won't work because Cloudflare pages will look for non-existing .html files
-  # https://developers.cloudflare.com/pages/configuration/serving-pages/#single-page-application-spa-rendering
-  job-2:
-    name: Deploy to Cloudflare Pages
-    needs: job-1
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      deployments: write
-
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist
-
-      - name: Upload artifact to Cloudflare Pages
+      # How to get the credentials
+      # https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/#get-credentials-from-cloudflare
+      # Note: there cannot be top level 404.html or SPA rendering won't work because Cloudflare pages will look for non-existing .html files
+      # https://developers.cloudflare.com/pages/configuration/serving-pages/#single-page-application-spa-rendering
+      - name: Upload build to Cloudflare Pages
         uses: cloudflare/pages-action@1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
