@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { TMDB, type TV } from 'tmdb-ts';
+import { type Movie, TMDB } from 'tmdb-ts';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 import { useStorage } from '@vueuse/core';
 
 const bearerStore = useBearerStore();
 
-const minPopularity = useStorage('minPopularityTv', 0);
+const minPopularity = useStorage('minPopularityMovies', 0);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
-const showsList = ref<TV[]>([]);
+const moviesList = ref<Movie[]>([]);
 const currentPage = ref(0);
 const totalPages = ref(99);
 const isLoadingMore = ref(false);
 
-const filteredShows = computed(() => {
-	return showsList.value.filter((show) => {
-		if (show.poster_path === null) {
+const filteredMovies = computed(() => {
+	return moviesList.value.filter((movie) => {
+		if (movie.poster_path === null) {
 			return false;
 		}
 
-		if (show.popularity < minPopularity.value) {
+		if (movie.popularity < minPopularity.value) {
 			return false;
 		}
 
@@ -57,28 +57,25 @@ async function loadNextPage() {
 
 	currentPage.value++;
 
-	await getShows();
+	await getMovies();
 }
 
-async function getShows() {
-	const showsResponse = await tmdb.discover.tvShow({
+async function getMovies() {
+	const moviesResponse = await tmdb.discover.movie({
 		// since yesterday
-		'first_air_date.gte': new Date(Date.now() - 86400000).toISOString(),
+		'primary_release_date.gte': new Date(Date.now() - 86400000).toISOString(),
+		sort_by: 'primary_release_date.asc',
 
-		include_null_first_air_dates: false,
 		language: 'en-US',
 		with_original_language: 'en',
 		page: currentPage.value,
-
-		//@ts-ignore
-		sort_by: 'first_air_date.asc',
 	});
 
-	totalPages.value = showsResponse.total_pages;
+	totalPages.value = moviesResponse.total_pages;
 
-	showsList.value.push(...showsResponse.results);
+	moviesList.value.push(...moviesResponse.results);
 
-	console.log(showsResponse.results);
+	console.log(moviesResponse.results);
 }
 
 async function infiniteScrollListener() {
@@ -125,14 +122,14 @@ function onWheel(e: WheelEvent) {
 
 <template>
 	<div>
-		<h1>TV Shows</h1>
+		<h1>Movies</h1>
 
 		<label for="popularity">Min. popularity</label>
 		<input type="range" v-model.number="minPopularity" min="0" max="100" @wheel.prevent="onWheel" />
 		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
-			<ShowCard v-for="show in filteredShows" :show="show" />
+			<ShowCard v-for="movie in filteredMovies" :show="movie" />
 		</div>
 
 		<div v-if="isLoadingMore">@TODO LOADING SPINNER</div>
