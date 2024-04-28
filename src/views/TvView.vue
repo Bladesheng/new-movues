@@ -4,6 +4,7 @@ import { TMDB, type TV } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
+import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 
 const bearerStore = useBearerStore();
 
@@ -134,8 +135,10 @@ function onWheel(e: WheelEvent) {
 			/>
 		</div>
 
-		<div v-if="isLoadingMore">@TODO LOADING SPINNER</div>
-		<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
+		<div class="flex flex-grow justify-center">
+			<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
+			<LoadingSpinner v-else class="h-10 w-10" />
+		</div>
 	</div>
 </template>
 
