@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { type Movie, TMDB } from 'tmdb-ts';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
-import { useStorage } from '@vueuse/core';
+import { useInfiniteScroll, useStorage } from '@vueuse/core';
 
 const bearerStore = useBearerStore();
 
@@ -31,7 +31,14 @@ const filteredMovies = computed(() => {
 });
 
 onMounted(async () => {
-	window.addEventListener('scroll', infiniteScrollListener);
+	useInfiniteScroll(
+		window,
+		async () => {
+			await loadNextPage();
+		},
+
+		{ distance: 400 }
+	);
 
 	await loadNextPage();
 
@@ -46,10 +53,6 @@ onMounted(async () => {
 	);
 });
 
-onUnmounted(() => {
-	window.removeEventListener('scroll', infiniteScrollListener);
-});
-
 async function loadNextPage() {
 	if (currentPage.value >= totalPages.value) {
 		return;
@@ -57,7 +60,9 @@ async function loadNextPage() {
 
 	currentPage.value++;
 
+	isLoadingMore.value = true;
 	await getMovies();
+	isLoadingMore.value = false;
 }
 
 async function getMovies() {
@@ -76,19 +81,6 @@ async function getMovies() {
 	moviesList.value.push(...moviesResponse.results);
 
 	console.log(moviesResponse.results);
-}
-
-async function infiniteScrollListener() {
-	const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-	const nearBottom = scrollTop + clientHeight >= scrollHeight - 400;
-
-	if (nearBottom && !isLoadingMore.value) {
-		isLoadingMore.value = true;
-
-		await loadNextPage();
-
-		isLoadingMore.value = false;
-	}
 }
 
 async function checkIfMoreExist() {
