@@ -1,19 +1,37 @@
 <script setup lang="ts">
-import type { TV } from 'tmdb-ts';
-import { computed, type PropType } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
-	show: {
+	releaseDate: {
 		required: true,
-		type: Object as PropType<TV>,
+		type: Date,
+	},
+
+	linkLocation: {
+		required: true,
+		type: String,
+	},
+
+	posterPath: {
+		required: true,
+		type: String,
+	},
+
+	popularity: {
+		required: true,
+		type: Number,
+	},
+
+	name: {
+		required: true,
+		type: String,
 	},
 });
 
 const daysUntilAir = computed(() => {
-	const firstAirDate = new Date(props.show.first_air_date);
 	const now = new Date();
 
-	const diff = firstAirDate.getTime() - now.getTime();
+	const diff = props.releaseDate.getTime() - now.getTime();
 
 	const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
 
@@ -30,13 +48,11 @@ const daysUntilAir = computed(() => {
 });
 
 const dateLocaleFormatted = computed(() => {
-	const date = new Date(props.show.first_air_date);
-
 	// @TODO add locale override to settings
 	// const locale = navigator.language;
 	const locale = 'cs-CZ';
 
-	return date.toLocaleDateString(locale, {
+	return props.releaseDate.toLocaleDateString(locale, {
 		weekday: 'long',
 		day: 'numeric',
 		month: 'numeric',
@@ -48,12 +64,12 @@ const dateLocaleFormatted = computed(() => {
 <template>
 	<a
 		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 visited:text-gray-400"
-		:href="`https://www.themoviedb.org/tv/${props.show.id}`"
+		:href="`https://www.themoviedb.org/${props.linkLocation}`"
 		target="_blank"
 	>
 		<div class="overflow-hidden">
 			<img
-				:src="`https://image.tmdb.org/t/p/w400${props.show.poster_path}`"
+				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"
 				alt="show poster"
 				class="duration-200 group-hover:scale-105"
 			/>
@@ -72,14 +88,14 @@ const dateLocaleFormatted = computed(() => {
 			title="Popularity"
 		>
 			📈
-			{{ Math.round(props.show.popularity) }}
+			{{ Math.round(props.popularity) }}
 		</div>
 
 		<div
 			class="flex h-12 flex-grow items-center justify-center text-center text-sm"
-			:title="props.show.name"
+			:title="props.name"
 		>
-			{{ props.show.name }}
+			{{ props.name }}
 		</div>
 	</a>
 </template>

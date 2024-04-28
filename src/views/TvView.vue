@@ -132,7 +132,14 @@ function onWheel(e: WheelEvent) {
 		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
-			<ShowCard v-for="show in filteredShows" :show="show" />
+			<ShowCard
+				v-for="show in filteredShows"
+				:linkLocation="`tv/${show.id}`"
+				:releaseDate="new Date(show.first_air_date)"
+				:posterPath="show.poster_path"
+				:popularity="show.popularity"
+				:name="show.name"
+			/>
 		</div>
 
 		<div v-if="isLoadingMore">@TODO LOADING SPINNER</div>
