@@ -2,7 +2,7 @@
 import { useBearerStore } from '@/stores/bearer';
 import { type Movie, TMDB } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
-import ShowCard from '@/components/ShowCard.vue';
+import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
@@ -124,7 +124,7 @@ function onWheel(e: WheelEvent) {
 
 		<div class="grid gap-4">
 			<ScaleTransitionGroup>
-				<ShowCard
+				<PosterCard
 					v-for="movie in filteredMovies"
 					:key="movie.id"
 					:linkLocation="`movie/${movie.id}`"
