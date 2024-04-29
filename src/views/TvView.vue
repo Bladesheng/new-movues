@@ -5,6 +5,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import ShowCard from '@/components/ShowCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
+import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 
 const bearerStore = useBearerStore();
 
@@ -125,14 +126,17 @@ function onWheel(e: WheelEvent) {
 		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
-			<ShowCard
-				v-for="show in filteredShows"
-				:linkLocation="`tv/${show.id}`"
-				:releaseDate="new Date(show.first_air_date)"
-				:posterPath="show.poster_path"
-				:popularity="show.popularity"
-				:name="show.name"
-			/>
+			<ScaleTransitionGroup>
+				<ShowCard
+					v-for="show in filteredShows"
+					:key="show.id"
+					:linkLocation="`tv/${show.id}`"
+					:releaseDate="new Date(show.first_air_date)"
+					:posterPath="show.poster_path"
+					:popularity="show.popularity"
+					:name="show.name"
+				/>
+			</ScaleTransitionGroup>
 		</div>
 
 		<div class="flex flex-grow justify-center">
