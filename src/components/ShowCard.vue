@@ -67,7 +67,7 @@ const dateLocaleFormatted = computed(() => {
 		:href="`https://www.themoviedb.org/${props.linkLocation}`"
 		target="_blank"
 	>
-		<div class="overflow-hidden">
+		<div class="flex flex-grow overflow-hidden">
 			<img
 				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"
 				alt="show poster"
@@ -91,10 +91,7 @@ const dateLocaleFormatted = computed(() => {
 			{{ Math.round(props.popularity) }}
 		</div>
 
-		<div
-			class="flex h-12 flex-grow items-center justify-center text-center text-sm"
-			:title="props.name"
-		>
+		<div class="flex h-12 items-center justify-center text-center text-sm" :title="props.name">
 			{{ props.name }}
 		</div>
 	</a>
