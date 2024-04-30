@@ -121,9 +121,7 @@ function onWheel(e: WheelEvent) {
 </script>
 
 <template>
-	<div>
-		<h1>TV Shows</h1>
-
+	<main class="px-4">
 		<div class="flex">
 			<SidebarLeft>
 				<label for="popularity">Minimal popularity</label>
@@ -166,7 +164,7 @@ function onWheel(e: WheelEvent) {
 				</div>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <style scoped>

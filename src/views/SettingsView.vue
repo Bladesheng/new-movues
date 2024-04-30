@@ -3,9 +3,7 @@ import BearerSettings from '@/components/BearerSettings.vue';
 </script>
 
 <template>
-	<main>
-		<h1>Settings</h1>
-
+	<main class="px-4">
 		<BearerSettings />
 	</main>
 </template>
