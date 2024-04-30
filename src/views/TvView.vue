@@ -6,6 +6,7 @@ import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
+import Slider from 'primevue/slider';
 
 const bearerStore = useBearerStore();
 
@@ -122,7 +123,7 @@ function onWheel(e: WheelEvent) {
 		<h1>TV Shows</h1>
 
 		<label for="popularity">Min. popularity</label>
-		<input type="range" v-model.number="minPopularity" min="0" max="100" @wheel.prevent="onWheel" />
+		<Slider v-model="minPopularity" :min="0" :max="100" @wheel.prevent="onWheel" class="max-w-52" />
 		<input type="number" id="popularity" v-model="minPopularity" />
 
 		<div class="grid gap-4">
