@@ -7,6 +7,8 @@ import { useInfiniteScroll, useStorage } from '@vueuse/core';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 import Slider from 'primevue/slider';
+import InputNumber from 'primevue/inputnumber';
+import SidebarLeft from '@/components/SidebarLeft.vue';
 
 const bearerStore = useBearerStore();
 
@@ -122,27 +124,47 @@ function onWheel(e: WheelEvent) {
 	<div>
 		<h1>TV Shows</h1>
 
-		<label for="popularity">Min. popularity</label>
-		<Slider v-model="minPopularity" :min="0" :max="100" @wheel.prevent="onWheel" class="max-w-52" />
-		<input type="number" id="popularity" v-model="minPopularity" />
+		<div class="flex">
+			<SidebarLeft>
+				<label for="popularity">Minimal popularity</label>
 
-		<div class="grid gap-4">
-			<ScaleTransitionGroup>
-				<PosterCard
-					v-for="show in filteredShows"
-					:key="show.id"
-					:linkLocation="`tv/${show.id}`"
-					:releaseDate="new Date(show.first_air_date)"
-					:posterPath="show.poster_path"
-					:popularity="show.popularity"
-					:name="show.name"
-				/>
-			</ScaleTransitionGroup>
-		</div>
+				<div class="flex items-center gap-4">
+					<Slider
+						v-model="minPopularity"
+						:min="0"
+						:max="100"
+						@wheel.prevent="onWheel"
+						class="h-2 w-40"
+					/>
 
-		<div class="flex flex-grow justify-center">
-			<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
-			<LoadingSpinner v-else class="h-10 w-10" />
+					<InputNumber
+						v-model="minPopularity"
+						inputId="popularity"
+						inputClass="w-14 h-10 text-center"
+					/>
+				</div>
+			</SidebarLeft>
+
+			<div class="flex-grow">
+				<div class="grid gap-4">
+					<ScaleTransitionGroup>
+						<PosterCard
+							v-for="show in filteredShows"
+							:key="show.id"
+							:linkLocation="`tv/${show.id}`"
+							:releaseDate="new Date(show.first_air_date)"
+							:posterPath="show.poster_path"
+							:popularity="show.popularity"
+							:name="show.name"
+						/>
+					</ScaleTransitionGroup>
+				</div>
+
+				<div class="flex flex-grow justify-center">
+					<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
+					<LoadingSpinner v-else class="h-10 w-10" />
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
