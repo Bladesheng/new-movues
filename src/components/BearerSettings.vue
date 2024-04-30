@@ -15,10 +15,8 @@ function saveBearer() {
 </script>
 
 <template>
-	<div class="flex flex-col gap-2 p-4">
-		<div></div>
-
-		<Card>
+	<div class="flex flex-col gap-4 p-4 sm:flex-row">
+		<Card class="sm:w-1/2">
 			<template #title>
 				<div>Current bearer</div>
 			</template>
@@ -30,7 +28,7 @@ function saveBearer() {
 			</template>
 		</Card>
 
-		<Card>
+		<Card class="sm:w-1/2">
 			<template #title>
 				<label for="bearer">New bearer</label>
 			</template>
