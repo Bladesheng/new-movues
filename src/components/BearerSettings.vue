@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { ref } from 'vue';
+import Textarea from 'primevue/textarea';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
 
 const bearerStore = useBearerStore();
 
@@ -12,18 +15,34 @@ function saveBearer() {
 </script>
 
 <template>
-	<div class="flex flex-col gap-2">
-		<div>
-			<div>Current bearer:</div>
-			<div class="font-bold">{{ bearerStore.bearer }}</div>
-		</div>
+	<div class="flex flex-col gap-2 p-4">
+		<div></div>
 
-		<div class="flex flex-col">
-			<label for="bearer">New bearer:</label>
-			<textarea id="bearer" cols="30" rows="10" v-model="inputValue"></textarea>
+		<Card>
+			<template #title>
+				<div>Current bearer</div>
+			</template>
 
-			<button @click="saveBearer">Save bearer</button>
-		</div>
+			<template #content>
+				<div class="text-gray-500" style="overflow-wrap: break-word">
+					{{ bearerStore.bearer }}
+				</div>
+			</template>
+		</Card>
+
+		<Card>
+			<template #title>
+				<label for="bearer">New bearer</label>
+			</template>
+
+			<template #content>
+				<div class="flex flex-col gap-2">
+					<Textarea v-model="inputValue" rows="10" cols="30" id="bearer" />
+
+					<Button label="Save bearer" @click="saveBearer" />
+				</div>
+			</template>
+		</Card>
 	</div>
 </template>
 
