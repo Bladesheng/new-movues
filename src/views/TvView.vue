@@ -9,6 +9,7 @@ import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 import Slider from 'primevue/slider';
 import InputNumber from 'primevue/inputnumber';
 import SidebarLeft from '@/components/SidebarLeft.vue';
+import LoaderFooter from '@/components/LoaderFooter.vue';
 
 const bearerStore = useBearerStore();
 
@@ -158,10 +159,7 @@ function onWheel(e: WheelEvent) {
 					</ScaleTransitionGroup>
 				</div>
 
-				<div class="flex flex-grow justify-center">
-					<div v-if="currentPage === totalPages">@TODO That's all folks!</div>
-					<LoadingSpinner v-else class="h-10 w-10" />
-				</div>
+				<LoaderFooter :isLoadingMore="currentPage === totalPages" />
 			</div>
 		</div>
 	</main>
