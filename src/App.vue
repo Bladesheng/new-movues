@@ -1,37 +1,11 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import type { MenuItem } from 'primevue/menuitem';
-import TabMenu from 'primevue/tabmenu';
-
-const items: MenuItem[] = [
-	{
-		label: 'Home',
-		route: { name: 'home' },
-	},
-	{
-		label: 'Movies',
-		route: { name: 'movies' },
-	},
-	{
-		label: 'TV Shows',
-		route: { name: 'tv' },
-	},
-	{
-		label: 'Settings',
-		route: { name: 'settings' },
-	},
-];
+import { RouterView } from 'vue-router';
+import HeaderNavigation from '@/components/HeaderNavigation.vue';
 </script>
 
 <template>
 	<header>
-		<TabMenu :model="items" class="m-4">
-			<template #item="{ item, props }">
-				<RouterLink v-bind="props.action" :to="item.route">
-					{{ item.label }}
-				</RouterLink>
-			</template>
-		</TabMenu>
+		<HeaderNavigation />
 	</header>
 
 	<RouterView />
