@@ -11,11 +11,13 @@ import InputNumber from 'primevue/inputnumber';
 import SelectButton from 'primevue/selectbutton';
 import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
+import SelectedGenres from '@/components/SelectedGenres.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityMovies', 0);
 const sortBy = useStorage<SortOption>('movieSortBy', 'primary_release_date.asc');
+const selectedGenres = ref<number[]>([]);
 
 const sortByOptions = [
 	{
@@ -72,7 +74,7 @@ onMounted(async () => {
 	);
 });
 
-watch(sortBy, async () => {
+watch([sortBy, selectedGenres], async () => {
 	currentPage.value = 0;
 	moviesList.value = [];
 
@@ -96,6 +98,8 @@ async function getMovies() {
 		// since yesterday
 		'primary_release_date.gte': new Date(Date.now() - 86400000).toISOString(),
 		sort_by: 'primary_release_date.asc',
+
+		with_genres: selectedGenres.value.join(','),
 
 		language: 'en-US',
 		with_original_language: 'en',
@@ -172,6 +176,8 @@ function onWheel(e: WheelEvent) {
 						:optionValue="(data) => data.value"
 					/>
 				</div>
+
+				<SelectedGenres mediaType="movies" v-model="selectedGenres" />
 			</SidebarLeft>
 
 			<div class="flex-grow">

@@ -10,11 +10,13 @@ import InputNumber from 'primevue/inputnumber';
 import SelectButton from 'primevue/selectbutton';
 import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
+import SelectedGenres from '@/components/SelectedGenres.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityTv', 0);
 const sortBy = useStorage<SortOption | 'first_air_date.asc'>('tvSortBy', 'first_air_date.asc');
+const selectedGenres = ref<number[]>([]);
 
 const sortByOptions = [
 	{
@@ -71,7 +73,7 @@ onMounted(async () => {
 	);
 });
 
-watch(sortBy, async () => {
+watch([sortBy, selectedGenres], async () => {
 	currentPage.value = 0;
 	showsList.value = [];
 
@@ -99,6 +101,8 @@ async function getShows() {
 		language: 'en-US',
 		with_original_language: 'en',
 		page: currentPage.value,
+
+		with_genres: selectedGenres.value.join(','),
 
 		//@ts-ignore
 		sort_by: sortBy.value,
@@ -174,6 +178,8 @@ function onWheel(e: WheelEvent) {
 						:optionValue="(data) => data.value"
 					/>
 				</div>
+
+				<SelectedGenres mediaType="tvShows" v-model="selectedGenres" />
 			</SidebarLeft>
 
 			<div class="flex-grow">
