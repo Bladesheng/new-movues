@@ -34,7 +34,7 @@ function selectNone() {
 <template>
 	<div class="flex flex-col gap-2">
 		<div class="flex h-6 items-center gap-2">
-			<span>Genres</span>
+			<strong>Genres</strong>
 
 			<Button
 				v-if="selectedGenres.length"

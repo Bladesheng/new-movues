@@ -149,7 +149,9 @@ function onWheel(e: WheelEvent) {
 		<div class="flex">
 			<SidebarLeft>
 				<div class="flex flex-col gap-2">
-					<label for="popularity">Minimal popularity</label>
+					<label for="popularity">
+						<strong>Minimal popularity</strong>
+					</label>
 
 					<div class="flex items-center gap-4">
 						<Slider
@@ -169,7 +171,7 @@ function onWheel(e: WheelEvent) {
 				</div>
 
 				<div class="flex flex-col gap-2">
-					<div>Sort by</div>
+					<strong>Sort by</strong>
 
 					<SelectButton
 						v-model="sortBy"
