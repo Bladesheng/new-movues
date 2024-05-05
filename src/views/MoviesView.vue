@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { type Movie, TMDB } from 'tmdb-ts';
+import { type Movie, type SortOption, TMDB } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
@@ -8,12 +8,25 @@ import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 import Slider from 'primevue/slider';
 import InputNumber from 'primevue/inputnumber';
+import SelectButton from 'primevue/selectbutton';
 import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityMovies', 0);
+const sortBy = useStorage<SortOption>('movieSortBy', 'primary_release_date.asc');
+
+const sortByOptions = [
+	{
+		label: 'Popularity',
+		value: 'popularity.desc',
+	},
+	{
+		label: 'Air date',
+		value: 'primary_release_date.asc',
+	},
+];
 
 const tmdb = new TMDB(bearerStore.bearer);
 
@@ -57,6 +70,13 @@ onMounted(async () => {
 			immediate: true,
 		}
 	);
+});
+
+watch(sortBy, async () => {
+	currentPage.value = 0;
+	moviesList.value = [];
+
+	await loadNextPage();
 });
 
 async function loadNextPage() {
@@ -122,21 +142,34 @@ function onWheel(e: WheelEvent) {
 	<main class="px-4">
 		<div class="flex">
 			<SidebarLeft>
-				<label for="popularity">Minimal popularity</label>
+				<div class="flex flex-col gap-2">
+					<label for="popularity">Minimal popularity</label>
 
-				<div class="flex items-center gap-4">
-					<Slider
-						v-model="minPopularity"
-						:min="0"
-						:max="100"
-						@wheel.prevent="onWheel"
-						class="h-2 w-40"
-					/>
+					<div class="flex items-center gap-4">
+						<Slider
+							v-model="minPopularity"
+							:min="0"
+							:max="100"
+							@wheel.prevent="onWheel"
+							class="h-2 w-40"
+						/>
 
-					<InputNumber
-						v-model="minPopularity"
-						inputId="popularity"
-						inputClass="w-14 h-10 text-center"
+						<InputNumber
+							v-model="minPopularity"
+							inputId="popularity"
+							inputClass="w-14 h-10 text-center"
+						/>
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-2">
+					<div>Sort by</div>
+
+					<SelectButton
+						v-model="sortBy"
+						:options="sortByOptions"
+						:optionLabel="(data) => data.label"
+						:optionValue="(data) => data.value"
 					/>
 				</div>
 			</SidebarLeft>

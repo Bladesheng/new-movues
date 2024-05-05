@@ -5,7 +5,7 @@ const isOpen = ref(true);
 </script>
 
 <template>
-	<div v-if="isOpen" class="p-4">
+	<div v-if="isOpen" class="flex flex-col gap-4 p-4">
 		<slot />
 	</div>
 </template>
