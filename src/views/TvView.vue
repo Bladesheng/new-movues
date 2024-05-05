@@ -20,12 +20,12 @@ const selectedGenres = ref<number[]>([]);
 
 const sortByOptions = [
 	{
-		label: 'Popularity',
-		value: 'popularity.desc',
-	},
-	{
 		label: 'Air date',
 		value: 'first_air_date.asc',
+	},
+	{
+		label: 'Popularity',
+		value: 'popularity.desc',
 	},
 ];
 
