@@ -43,19 +43,13 @@ function onWheel(e: WheelEvent) {
 </script>
 
 <template>
-	<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2" @wheel.prevent="onWheel">
 		<label :for="props.id">
 			<strong>{{ props.label }}</strong>
 		</label>
 
 		<div class="flex items-center gap-4">
-			<Slider
-				v-model="currentValue"
-				:min="props.min"
-				:max="props.max"
-				@wheel.prevent="onWheel"
-				class="h-2 w-40"
-			/>
+			<Slider v-model="currentValue" :min="props.min" :max="props.max" class="h-2 w-40" />
 
 			<InputNumber v-model="currentValue" :inputId="props.id" inputClass="w-14 h-10 text-center" />
 		</div>
