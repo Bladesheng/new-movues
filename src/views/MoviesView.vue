@@ -10,13 +10,14 @@ import LoaderFooter from '@/components/LoaderFooter.vue';
 import SelectedGenres from '@/components/filters/SelectedGenres.vue';
 import SortOptions from '@/components/filters/SortOptions.vue';
 import type { SortOptionFull } from '@/types/tmdb';
-import PopularityMinSlider from '@/components/filters/PopularityMinSlider.vue';
+import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityMovies', 0);
 const sortBy = useStorage<SortOptionFull>('movieSortBy', 'primary_release_date.asc');
 const selectedGenres = ref<number[]>([]);
+const maxDaysOld = useStorage('movieMaxDaysOld', 1);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
@@ -62,7 +63,7 @@ onMounted(async () => {
 	);
 });
 
-watch([sortBy, selectedGenres], async () => {
+watch([sortBy, selectedGenres, maxDaysOld], async () => {
 	currentPage.value = 0;
 	moviesList.value = [];
 
@@ -83,8 +84,9 @@ async function loadNextPage() {
 
 async function getMovies() {
 	const moviesResponse = await tmdb.discover.movie({
-		// since yesterday
-		'primary_release_date.gte': new Date(Date.now() - 86400000).toISOString(),
+		'primary_release_date.gte': new Date(
+			Date.now() - maxDaysOld.value * 24 * 60 * 60 * 1000
+		).toISOString(),
 		sort_by: 'primary_release_date.asc',
 
 		with_genres: selectedGenres.value.join(','),
@@ -118,7 +120,14 @@ async function checkIfMoreExist() {
 	<main class="px-4">
 		<div class="flex">
 			<SidebarLeft>
-				<PopularityMinSlider v-model="minPopularity" />
+				<SliderWithInput v-model="minPopularity" id="popularity" label="Minimal popularity" />
+
+				<SliderWithInput
+					v-model="maxDaysOld"
+					id="daysOld"
+					label="Max. movie age (days)"
+					:max="30"
+				/>
 
 				<SortOptions
 					v-model="sortBy"

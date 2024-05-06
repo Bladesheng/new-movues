@@ -10,13 +10,14 @@ import LoaderFooter from '@/components/LoaderFooter.vue';
 import SelectedGenres from '@/components/filters/SelectedGenres.vue';
 import SortOptions from '@/components/filters/SortOptions.vue';
 import type { SortOptionFull } from '@/types/tmdb';
-import PopularityMinSlider from '@/components/filters/PopularityMinSlider.vue';
+import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityTv', 0);
 const sortBy = useStorage<SortOptionFull>('tvSortBy', 'first_air_date.asc');
 const selectedGenres = ref<number[]>([]);
+const maxDaysOld = useStorage('tvMaxDaysOld', 1);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
@@ -62,7 +63,7 @@ onMounted(async () => {
 	);
 });
 
-watch([sortBy, selectedGenres], async () => {
+watch([sortBy, selectedGenres, maxDaysOld], async () => {
 	currentPage.value = 0;
 	showsList.value = [];
 
@@ -83,8 +84,9 @@ async function loadNextPage() {
 
 async function getShows() {
 	const showsResponse = await tmdb.discover.tvShow({
-		// since yesterday
-		'first_air_date.gte': new Date(Date.now() - 86400000).toISOString(),
+		'first_air_date.gte': new Date(
+			Date.now() - maxDaysOld.value * 24 * 60 * 60 * 1000
+		).toISOString(),
 
 		include_null_first_air_dates: false,
 		language: 'en-US',
@@ -121,7 +123,9 @@ async function checkIfMoreExist() {
 	<main class="px-4">
 		<div class="flex">
 			<SidebarLeft>
-				<PopularityMinSlider v-model="minPopularity" />
+				<SliderWithInput v-model="minPopularity" id="popularity" label="Minimal popularity" />
+
+				<SliderWithInput v-model="maxDaysOld" id="daysOld" label="Max. show age (days)" :max="30" />
 
 				<SortOptions
 					v-model="sortBy"
