@@ -1,33 +1,23 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { type SortOption, TMDB, type TV } from 'tmdb-ts';
+import { TMDB, type TV } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 import Slider from 'primevue/slider';
 import InputNumber from 'primevue/inputnumber';
-import SelectButton from 'primevue/selectbutton';
 import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
-import SelectedGenres from '@/components/SelectedGenres.vue';
+import SelectedGenres from '@/components/filters/SelectedGenres.vue';
+import SortOptions from '@/components/filters/SortOptions.vue';
+import type { SortOptionFull } from '@/types/tmdb';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityTv', 0);
-const sortBy = useStorage<SortOption | 'first_air_date.asc'>('tvSortBy', 'first_air_date.asc');
+const sortBy = useStorage<SortOptionFull>('tvSortBy', 'first_air_date.asc');
 const selectedGenres = ref<number[]>([]);
-
-const sortByOptions = [
-	{
-		label: 'Air date',
-		value: 'first_air_date.asc',
-	},
-	{
-		label: 'Popularity',
-		value: 'popularity.desc',
-	},
-];
 
 const tmdb = new TMDB(bearerStore.bearer);
 
@@ -170,18 +160,21 @@ function onWheel(e: WheelEvent) {
 					</div>
 				</div>
 
-				<div class="flex flex-col gap-2">
-					<strong>Sort by</strong>
+				<SortOptions
+					v-model="sortBy"
+					:sortByOptions="[
+						{
+							label: 'Air date',
+							value: 'first_air_date.asc',
+						},
+						{
+							label: 'Popularity',
+							value: 'popularity.desc',
+						},
+					]"
+				/>
 
-					<SelectButton
-						v-model="sortBy"
-						:options="sortByOptions"
-						:optionLabel="(data) => data.label"
-						:optionValue="(data) => data.value"
-					/>
-				</div>
-
-				<SelectedGenres mediaType="tvShows" v-model="selectedGenres" />
+				<SelectedGenres v-model="selectedGenres" mediaType="tvShows" />
 			</SidebarLeft>
 
 			<div class="flex-grow">
