@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { type Movie, TMDB } from 'tmdb-ts';
+import { type Movie, type SortOption, TMDB } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
@@ -9,13 +9,12 @@ import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
 import SelectedGenres from '@/components/filters/SelectedGenres.vue';
 import SortOptions from '@/components/filters/SortOptions.vue';
-import type { SortOptionFull } from '@/types/tmdb';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 
 const bearerStore = useBearerStore();
 
 const minPopularity = useStorage('minPopularityMovies', 0);
-const sortBy = useStorage<SortOptionFull>('movieSortBy', 'primary_release_date.asc');
+const sortBy = useStorage<SortOption>('movieSortBy', 'primary_release_date.asc');
 const selectedGenres = ref<number[]>([]);
 const maxDaysOld = useStorage('movieMaxDaysOld', 1);
 
@@ -87,7 +86,8 @@ async function getMovies() {
 		'primary_release_date.gte': new Date(
 			Date.now() - maxDaysOld.value * 24 * 60 * 60 * 1000
 		).toISOString(),
-		sort_by: 'primary_release_date.asc',
+
+		sort_by: sortBy.value,
 
 		with_genres: selectedGenres.value.join(','),
 
