@@ -154,6 +154,8 @@ async function checkIfMoreExist() {
 							:releaseDate="new Date(show.first_air_date)"
 							:posterPath="show.poster_path"
 							:popularity="show.popularity"
+							:voteAverage="show.vote_average"
+							:voteCount="show.vote_count"
 							:name="show.name"
 						/>
 					</ScaleTransitionGroup>

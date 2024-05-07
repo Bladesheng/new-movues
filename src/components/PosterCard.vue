@@ -22,6 +22,16 @@ const props = defineProps({
 		type: Number,
 	},
 
+	voteAverage: {
+		required: true,
+		type: Number,
+	},
+
+	voteCount: {
+		required: true,
+		type: Number,
+	},
+
 	name: {
 		required: true,
 		type: String,
@@ -84,12 +94,18 @@ const dateLocaleFormatted = computed(() => {
 			</span>
 		</div>
 
-		<div
-			class="absolute right-0 top-0 hidden rounded-bl bg-black bg-opacity-50 px-1 py-0.5 text-white group-hover:inline"
-			title="Popularity"
-		>
-			📈
-			{{ Math.round(props.popularity) }}
+		<div class="absolute right-0 top-0 rounded-bl bg-black bg-opacity-50 px-1 py-0.5 text-white">
+			<span v-if="props.voteAverage > 0 && props.voteCount > 5" class="group-hover:hidden">
+				<i class="pi pi-star-fill text-yellow-500"></i>
+
+				{{ Math.round(props.voteAverage * 10) / 10 }}
+			</span>
+
+			<span class="hidden group-hover:inline" title="Popularity">
+				<i class="pi pi-chart-line"></i>
+
+				{{ Math.round(props.popularity) }}
+			</span>
 		</div>
 
 		<div class="flex h-12 items-center justify-center text-center text-sm" :title="props.name">

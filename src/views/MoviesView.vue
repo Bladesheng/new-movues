@@ -156,6 +156,8 @@ async function checkIfMoreExist() {
 							:releaseDate="new Date(movie.release_date)"
 							:posterPath="movie.poster_path"
 							:popularity="movie.popularity"
+							:voteAverage="movie.vote_average"
+							:voteCount="movie.vote_count"
 							:name="movie.title"
 						/>
 					</ScaleTransitionGroup>
