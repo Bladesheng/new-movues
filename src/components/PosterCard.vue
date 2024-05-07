@@ -78,33 +78,37 @@ const dateLocaleFormatted = computed(() => {
 		:href="`https://www.themoviedb.org/${props.linkLocation}`"
 		target="_blank"
 	>
-		<div class="flex flex-grow overflow-hidden">
+		<div class="relative flex flex-grow overflow-hidden">
 			<img
 				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"
 				alt="show poster"
 				class="duration-200 group-hover:scale-105"
 			/>
+
+			<div
+				class="absolute bottom-0 left-0 rounded-tr bg-black bg-opacity-50 px-1 py-0.5 text-white"
+			>
+				<span v-if="props.voteAverage > 0 && props.voteCount > 5" class="group-hover:hidden">
+					<i class="pi pi-star-fill text-yellow-500"></i>
+
+					{{ Math.round(props.voteAverage * 10) / 10 }}
+				</span>
+
+				<span class="hidden group-hover:inline" title="Popularity">
+					<i class="pi pi-chart-line"></i>
+
+					{{ Math.round(props.popularity) }}
+				</span>
+			</div>
 		</div>
 
 		<div class="absolute left-0 top-0 rounded-br bg-black bg-opacity-50 px-1 py-0.5 text-white">
-			<span class="group-hover:hidden">{{ daysUntilAir }}</span>
+			<span class="group-hover:hidden">
+				{{ daysUntilAir }}
+			</span>
 
-			<span class="hidden group-hover:inline">
+			<span class="hidden text-sm group-hover:inline">
 				{{ dateLocaleFormatted }}
-			</span>
-		</div>
-
-		<div class="absolute right-0 top-0 rounded-bl bg-black bg-opacity-50 px-1 py-0.5 text-white">
-			<span v-if="props.voteAverage > 0 && props.voteCount > 5" class="group-hover:hidden">
-				<i class="pi pi-star-fill text-yellow-500"></i>
-
-				{{ Math.round(props.voteAverage * 10) / 10 }}
-			</span>
-
-			<span class="hidden group-hover:inline" title="Popularity">
-				<i class="pi pi-chart-line"></i>
-
-				{{ Math.round(props.popularity) }}
 			</span>
 		</div>
 
