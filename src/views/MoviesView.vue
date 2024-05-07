@@ -181,7 +181,7 @@ async function checkIfMoreExist() {
 					</ScaleTransitionGroup>
 				</div>
 
-				<LoaderFooter :isLoadingMore="currentPage === totalPages" />
+				<LoaderFooter :isLoadingMore="currentPage < totalPages" />
 			</div>
 		</div>
 	</main>
