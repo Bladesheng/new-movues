@@ -26,19 +26,24 @@ const props = defineProps({
 });
 
 function onWheel(e: WheelEvent) {
+	// v-model isn't updated fast enough - the clamping would be done on the previous value (nothing would happen)
+	let newValue = currentValue.value;
+
 	if (e.deltaY > 0) {
-		currentValue.value -= 5;
+		newValue -= 5;
 	} else {
-		currentValue.value += 5;
+		newValue += 5;
 	}
 
-	if (currentValue.value < props.min) {
-		currentValue.value = props.min;
+	if (newValue < props.min) {
+		newValue = props.min;
 	}
 
-	if (currentValue.value > props.max) {
-		currentValue.value = props.max;
+	if (newValue > props.max) {
+		newValue = props.max;
 	}
+
+	currentValue.value = newValue;
 }
 </script>
 
