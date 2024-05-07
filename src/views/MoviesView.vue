@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { type Movie, type SortOption, TMDB } from 'tmdb-ts';
+import { type Movie, type MovieDiscoverResult, type SortOption, TMDB } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
@@ -20,13 +20,22 @@ const maxDaysOld = useStorage('movieMaxDaysOld', 1);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
-const moviesList = ref<Movie[]>([]);
+const responses = ref<MovieDiscoverResult[]>([]);
 const currentPage = ref(0);
 const totalPages = ref(99);
 const isLoadingMore = ref(false);
 
-const filteredMovies = computed(() => {
-	return moviesList.value.filter((movie) => {
+const filteredMovies = computed<Movie[]>(() => {
+	// responses can be added to the array in random order
+	responses.value.sort((a, b) => {
+		return a.page - b.page;
+	});
+
+	const moviesOnly = responses.value.flatMap((response) => {
+		return response.results;
+	});
+
+	return moviesOnly.filter((movie) => {
 		if (movie.poster_path === null) {
 			return false;
 		}
@@ -64,9 +73,10 @@ onMounted(async () => {
 
 watch([sortBy, selectedGenres, maxDaysOld], async () => {
 	currentPage.value = 0;
-	moviesList.value = [];
+	responses.value = [];
 
 	await loadNextPage();
+	await checkIfMoreExist();
 });
 
 async function loadNextPage() {
@@ -82,6 +92,13 @@ async function loadNextPage() {
 }
 
 async function getMovies() {
+	// When awaiting the response, the filters can change.
+	// When filters are modified, we want to start with fresh array, and we don't want to put the
+	// pending responses to the new array (duplication, wrong results, etc.).
+	// Ideal solution would be to abort all pending requests when filters change,
+	// but tmdb-ts library doesn't support that.
+	const responsesReferenceSnapshot = responses.value;
+
 	const moviesResponse = await tmdb.discover.movie({
 		'primary_release_date.gte': new Date(
 			Date.now() - maxDaysOld.value * 24 * 60 * 60 * 1000
@@ -98,7 +115,8 @@ async function getMovies() {
 
 	totalPages.value = moviesResponse.total_pages;
 
-	moviesList.value.push(...moviesResponse.results);
+	// if the original responses ref array was reassigned, we don't want to push the response to the new array
+	responsesReferenceSnapshot.push(moviesResponse);
 
 	console.log(moviesResponse.results);
 }

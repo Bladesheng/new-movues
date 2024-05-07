@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
-import { TMDB, type TV } from 'tmdb-ts';
+import { TMDB, type TV, type TvShowDiscoverResult } from 'tmdb-ts';
 import { computed, onMounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useStorage } from '@vueuse/core';
@@ -21,13 +21,22 @@ const maxDaysOld = useStorage('tvMaxDaysOld', 1);
 
 const tmdb = new TMDB(bearerStore.bearer);
 
-const showsList = ref<TV[]>([]);
+const responses = ref<TvShowDiscoverResult[]>([]);
 const currentPage = ref(0);
 const totalPages = ref(99);
 const isLoadingMore = ref(false);
 
-const filteredShows = computed(() => {
-	return showsList.value.filter((show) => {
+const filteredShows = computed<TV[]>(() => {
+	// responses can be added to the array in random order
+	responses.value.sort((a, b) => {
+		return a.page - b.page;
+	});
+
+	const showsOnly = responses.value.flatMap((response) => {
+		return response.results;
+	});
+
+	return showsOnly.filter((show) => {
 		if (show.poster_path === null) {
 			return false;
 		}
@@ -65,9 +74,10 @@ onMounted(async () => {
 
 watch([sortBy, selectedGenres, maxDaysOld], async () => {
 	currentPage.value = 0;
-	showsList.value = [];
+	responses.value = [];
 
 	await loadNextPage();
+	await checkIfMoreExist();
 });
 
 async function loadNextPage() {
@@ -83,6 +93,13 @@ async function loadNextPage() {
 }
 
 async function getShows() {
+	// When awaiting the response, the filters can change.
+	// When filters are modified, we want to start with fresh array, and we don't want to put the
+	// pending responses to the new array (duplication, wrong results, etc.).
+	// Ideal solution would be to abort all pending requests when filters change,
+	// but tmdb-ts library doesn't support that.
+	const responsesReferenceSnapshot = responses.value;
+
 	const showsResponse = await tmdb.discover.tvShow({
 		'first_air_date.gte': new Date(
 			Date.now() - maxDaysOld.value * 24 * 60 * 60 * 1000
@@ -101,7 +118,8 @@ async function getShows() {
 
 	totalPages.value = showsResponse.total_pages;
 
-	showsList.value.push(...showsResponse.results);
+	// if the original responses ref array was reassigned, we don't want to push the response to the new array
+	responsesReferenceSnapshot.push(showsResponse);
 
 	console.log(showsResponse.results);
 }
