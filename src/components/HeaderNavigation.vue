@@ -39,9 +39,17 @@ const items: MenuItem[] = [
 </script>
 
 <template>
-	<TabMenu :model="items" v-model:activeIndex="activeIndex" class="m-4">
+	<TabMenu
+		:model="items"
+		v-model:activeIndex="activeIndex"
+		class="mb-2 sm:m-4"
+		:pt="{
+			menu: 'justify-center',
+			menuitem: 'p-0',
+		}"
+	>
 		<template #item="{ item, props }">
-			<RouterLink v-bind="props.action" :to="item.route">
+			<RouterLink v-bind="props.action" :to="item.route" class="text-nowrap px-3 py-5 sm:p-5">
 				{{ item.label }}
 			</RouterLink>
 		</template>
