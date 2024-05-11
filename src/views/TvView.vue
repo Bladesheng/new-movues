@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useBearerStore } from '@/stores/bearer';
 import { TMDB, type TV, type TvShowDiscoverResult } from 'tmdb-ts';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
-import { useInfiniteScroll, useStorage } from '@vueuse/core';
+import { useInfiniteScroll, useMounted, useStorage } from '@vueuse/core';
 import ScaleTransitionGroup from '@/components/ScaleTransitionGroup.vue';
 import SidebarLeft from '@/components/SidebarLeft.vue';
 import LoaderFooter from '@/components/LoaderFooter.vue';
@@ -25,6 +25,7 @@ const responses = ref<TvShowDiscoverResult[]>([]);
 const currentPage = ref(0);
 const totalPages = ref(99);
 const isLoadingMore = ref(false);
+const isMounted = useMounted();
 
 const filteredShows = computed<TV[]>(() => {
 	// responses can be added to the array in random order
@@ -53,6 +54,8 @@ onMounted(async () => {
 	useInfiniteScroll(
 		window,
 		async () => {
+			if (!isMounted.value) return;
+
 			await loadNextPage();
 		},
 
@@ -70,6 +73,10 @@ onMounted(async () => {
 			immediate: true,
 		}
 	);
+});
+
+onUnmounted(() => {
+	isMounted.value = false;
 });
 
 watch([sortBy, selectedGenres, maxDaysOld], async () => {
