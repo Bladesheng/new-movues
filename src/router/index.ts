@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import MoviesView from '@/views/MoviesView.vue';
+import SettingsView from '@/views/SettingsView.vue';
+import TvView from '@/views/TvView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,19 +17,19 @@ const router = createRouter({
 		{
 			path: '/movies',
 			name: 'movies',
-			component: () => import('../views/MoviesView.vue'),
+			component: MoviesView,
 		},
 
 		{
 			path: '/settings',
 			name: 'settings',
-			component: () => import('../views/SettingsView.vue'),
+			component: SettingsView,
 		},
 
 		{
 			path: '/tv',
 			name: 'tv',
-			component: () => import('../views/TvView.vue'),
+			component: TvView,
 		},
 	],
 });
