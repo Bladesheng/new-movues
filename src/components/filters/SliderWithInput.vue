@@ -2,7 +2,7 @@
 import InputNumber from 'primevue/inputnumber';
 import Slider from 'primevue/slider';
 
-const currentValue = defineModel<number>({
+const currentValue = defineModel<number>('currentValue', {
 	required: true,
 });
 

@@ -9,7 +9,7 @@ const props = defineProps<{
 	mediaType: 'movies' | 'tvShows';
 }>();
 
-const selectedGenres = defineModel<number[]>({
+const selectedGenres = defineModel<number[]>('selectedGenres', {
 	required: true,
 });
 

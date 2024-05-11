@@ -2,7 +2,7 @@
 import SelectButton from 'primevue/selectbutton';
 import type { SortOptionFull } from '@/types/tmdb';
 
-const sortBy = defineModel<SortOptionFull>({
+const sortBy = defineModel<SortOptionFull>('sortBy', {
 	required: true,
 });
 

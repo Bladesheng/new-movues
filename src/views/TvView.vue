@@ -153,13 +153,22 @@ async function checkIfMoreExist() {
 <template>
 	<main class="px-4">
 		<div class="flex">
-			<SidebarLeft v-model="isSidebarOpen">
-				<SliderWithInput v-model="minPopularity" id="popularity" label="Minimal popularity" />
+			<SidebarLeft v-model:isOpen="isSidebarOpen">
+				<SliderWithInput
+					v-model:currentValue="minPopularity"
+					id="popularity"
+					label="Minimal popularity"
+				/>
 
-				<SliderWithInput v-model="maxDaysOld" id="daysOld" label="Max. show age (days)" :max="30" />
+				<SliderWithInput
+					v-model:currentValue="maxDaysOld"
+					id="daysOld"
+					label="Max. show age (days)"
+					:max="30"
+				/>
 
 				<SortOptions
-					v-model="sortBy"
+					v-model:sortBy="sortBy"
 					:sortByOptions="[
 						{
 							label: 'Air date',
@@ -172,7 +181,7 @@ async function checkIfMoreExist() {
 					]"
 				/>
 
-				<SelectedGenres v-model="selectedGenres" mediaType="tvShows" />
+				<SelectedGenres v-model:selectedGenres="selectedGenres" mediaType="tvShows" />
 			</SidebarLeft>
 
 			<div class="flex flex-grow flex-col gap-2">

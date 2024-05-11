@@ -3,7 +3,7 @@ import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import { useSwipe } from '@vueuse/core';
 
-const isOpen = defineModel<boolean>({
+const isOpen = defineModel<boolean>('isOpen', {
 	required: true,
 });
 
