@@ -10,6 +10,7 @@ import LoaderFooter from '@/components/LoaderFooter.vue';
 import SelectedGenres from '@/components/filters/SelectedGenres.vue';
 import SortOptions from '@/components/filters/SortOptions.vue';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
+import Button from 'primevue/button';
 
 const bearerStore = useBearerStore();
 
@@ -25,7 +26,11 @@ const currentPage = ref(0);
 const totalPages = ref(99);
 const isLoadingMore = ref(false);
 const isMounted = useMounted();
-
+const isSidebarOpen = useStorage<boolean>(
+	'isSidebarOpen',
+	// hidden on phone by default
+	window.innerWidth >= 650
+);
 const filteredMovies = computed<Movie[]>(() => {
 	// responses can be added to the array in random order
 	responses.value.sort((a, b) => {
@@ -144,7 +149,7 @@ async function checkIfMoreExist() {
 <template>
 	<main class="px-4">
 		<div class="flex">
-			<SidebarLeft>
+			<SidebarLeft v-model="isSidebarOpen">
 				<SliderWithInput v-model="minPopularity" id="popularity" label="Minimal popularity" />
 
 				<SliderWithInput
@@ -171,7 +176,17 @@ async function checkIfMoreExist() {
 				<SelectedGenres v-model="selectedGenres" mediaType="movies" />
 			</SidebarLeft>
 
-			<div class="flex-grow">
+			<div class="flex flex-grow flex-col gap-2">
+				<div class="self-end">
+					<Button
+						icon="pi pi-cog"
+						severity="secondary"
+						iconClass="text-xl"
+						size="small"
+						@click="isSidebarOpen = true"
+					/>
+				</div>
+
 				<div class="grid gap-4">
 					<ScaleTransitionGroup>
 						<PosterCard
