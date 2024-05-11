@@ -10,7 +10,7 @@ const isOpen = defineModel<boolean>('isOpen', {
 const isMobile = window.innerWidth < 650;
 
 const { lengthX } = useSwipe(window, {
-	threshold: 200,
+	threshold: 150,
 
 	onSwipe(e) {
 		if (e.target && (e.target as Element).closest('.p-slider-handle')) {
@@ -18,9 +18,9 @@ const { lengthX } = useSwipe(window, {
 			return;
 		}
 
-		if (lengthX.value < -200) {
+		if (lengthX.value < -150) {
 			isOpen.value = true;
-		} else if (lengthX.value > 200) {
+		} else if (lengthX.value > 150) {
 			isOpen.value = false;
 		}
 	},
