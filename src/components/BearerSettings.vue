@@ -12,6 +12,33 @@ const inputValue = ref(bearerStore.bearer);
 function saveBearer() {
 	bearerStore.bearer = inputValue.value;
 }
+
+async function fetchToken() {
+	const password = prompt('Password:');
+	if (!password) {
+		return;
+	}
+
+	try {
+		const res = await fetch('https://csfd.worker.bladesheng.com/tmdb', {
+			headers: {
+				password,
+			},
+		});
+
+		if (!res.ok) {
+			throw new Error('Failed to fetch token');
+		}
+
+		const body = await res.json();
+
+		const accessToken = body.accessToken;
+
+		bearerStore.bearer = accessToken;
+	} catch (e) {
+		console.error(e);
+	}
+}
 </script>
 
 <template>
@@ -38,6 +65,11 @@ function saveBearer() {
 					<Textarea v-model="inputValue" rows="10" cols="30" id="bearer" />
 
 					<Button label="Save bearer" @click="saveBearer" />
+				</div>
+
+				<div class="mt-6 flex flex-col gap-2">
+					<strong>Fetch token from API</strong>
+					<Button icon="pi pi-lock" label="Fetch new token" @click="fetchToken" />
 				</div>
 			</template>
 		</Card>
