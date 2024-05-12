@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BearerSettings from '@/components/BearerSettings.vue';
+import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 </script>
 
 <template>
 	<main class="px-4">
-		<BearerSettings />
+		<TmdbAccessTokenSettings />
 	</main>
 </template>

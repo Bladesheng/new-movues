@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useBearerStore } from '@/stores/bearer';
+import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import { ref } from 'vue';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 
-const bearerStore = useBearerStore();
+const tmdbAccessTokenStore = useTmdbAccessToken();
 
-const inputValue = ref(bearerStore.bearer);
+const inputValue = ref(tmdbAccessTokenStore.token);
 
-function saveBearer() {
-	bearerStore.bearer = inputValue.value;
+function saveToken() {
+	tmdbAccessTokenStore.token = inputValue.value;
 }
 
 async function fetchToken() {
@@ -34,7 +34,7 @@ async function fetchToken() {
 
 		const accessToken = body.accessToken;
 
-		bearerStore.bearer = accessToken;
+		tmdbAccessTokenStore.token = accessToken;
 	} catch (e) {
 		console.error(e);
 	}
@@ -45,26 +45,26 @@ async function fetchToken() {
 	<div class="flex flex-col gap-4 p-4 sm:flex-row">
 		<Card class="sm:w-1/2">
 			<template #title>
-				<div>Current bearer</div>
+				<div>Current token</div>
 			</template>
 
 			<template #content>
 				<div class="text-gray-500" style="overflow-wrap: break-word">
-					{{ bearerStore.bearer }}
+					{{ tmdbAccessTokenStore.token }}
 				</div>
 			</template>
 		</Card>
 
 		<Card class="sm:w-1/2">
 			<template #title>
-				<label for="bearer">New bearer</label>
+				<label for="token">New token</label>
 			</template>
 
 			<template #content>
 				<div class="flex flex-col gap-2">
-					<Textarea v-model="inputValue" rows="10" cols="30" id="bearer" />
+					<Textarea v-model="inputValue" rows="10" cols="30" id="token" />
 
-					<Button label="Save bearer" @click="saveBearer" />
+					<Button label="Save token" @click="saveToken" />
 				</div>
 
 				<div class="mt-6 flex flex-col gap-2">

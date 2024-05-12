@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBearerStore } from '@/stores/bearer';
+import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import { type Movie, type MovieDiscoverResult, type SortOption, TMDB } from 'tmdb-ts';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
@@ -12,14 +12,14 @@ import SortOptions from '@/components/filters/SortOptions.vue';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 import Button from 'primevue/button';
 
-const bearerStore = useBearerStore();
+const tmdbAccessTokenStore = useTmdbAccessToken();
 
 const minPopularity = useStorage('minPopularityMovies', 0);
 const sortBy = useStorage<SortOption>('movieSortBy', 'primary_release_date.asc');
 const selectedGenres = ref<number[]>([]);
 const maxDaysOld = useStorage('movieMaxDaysOld', 1);
 
-const tmdb = new TMDB(bearerStore.bearer);
+const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 const responses = ref<MovieDiscoverResult[]>([]);
 const currentPage = ref(0);

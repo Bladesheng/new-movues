@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBearerStore } from '@/stores/bearer';
+import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import { TMDB, type TV, type TvShowDiscoverResult } from 'tmdb-ts';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
@@ -13,14 +13,14 @@ import type { SortOptionFull } from '@/types/tmdb';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 import Button from 'primevue/button';
 
-const bearerStore = useBearerStore();
+const tmdbAccessTokenStore = useTmdbAccessToken();
 
 const minPopularity = useStorage('minPopularityTv', 0);
 const sortBy = useStorage<SortOptionFull>('tvSortBy', 'first_air_date.asc');
 const selectedGenres = ref<number[]>([]);
 const maxDaysOld = useStorage('tvMaxDaysOld', 1);
 
-const tmdb = new TMDB(bearerStore.bearer);
+const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 const responses = ref<TvShowDiscoverResult[]>([]);
 const currentPage = ref(0);

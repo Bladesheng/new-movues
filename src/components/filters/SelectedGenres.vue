@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { TMDB } from 'tmdb-ts';
-import { useBearerStore } from '@/stores/bearer';
+import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 
@@ -15,8 +15,8 @@ const selectedGenres = defineModel<number[]>('selectedGenres', {
 
 const genres = ref<{ id: number; name: string }[]>([]);
 
-const bearerStore = useBearerStore();
-const tmdb = new TMDB(bearerStore.bearer);
+const tmdbAccessTokenStore = useTmdbAccessToken();
+const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 onMounted(async () => {
 	const genresResponse = await tmdb.genres[props.mediaType]({
