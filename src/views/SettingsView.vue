@@ -27,6 +27,16 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 				Bladesheng
 			</a>
 		</small>
+
+		<div class="flex flex-col gap-1">
+			<small>
+				This product uses the
+				<a href="https://www.themoviedb.org/" target="_blank" class="underline"> TMDB </a>
+				API but is not endorsed or certified by TMDB
+			</small>
+
+			<img src="/tmdb.svg" alt="github-mark" class="h-3" />
+		</div>
 	</footer>
 </template>
 
