@@ -18,20 +18,43 @@ const router = createRouter({
 			path: '/movies',
 			name: 'movies',
 			component: MoviesView,
+			meta: {
+				title: 'Movies',
+			},
 		},
 
 		{
 			path: '/settings',
 			name: 'settings',
 			component: SettingsView,
+			meta: {
+				title: 'Settings',
+			},
 		},
 
 		{
 			path: '/tv',
 			name: 'tv',
 			component: TvView,
+			meta: {
+				title: 'TV',
+			},
 		},
 	],
+});
+
+router.afterEach((to, from) => {
+	switch (to.name) {
+		case 'home': {
+			document.title = 'MoVues';
+			break;
+		}
+
+		default: {
+			document.title = `${to.meta.title?.toString()} - MoVues`;
+			break;
+		}
+	}
 });
 
 export default router;
