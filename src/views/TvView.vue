@@ -187,7 +187,7 @@ async function checkIfMoreExist() {
 			<div class="flex flex-grow flex-col gap-2">
 				<div class="self-end">
 					<Button
-						icon="pi pi-cog"
+						icon="pi pi-sliders-h"
 						severity="secondary"
 						iconClass="text-xl"
 						size="small"
