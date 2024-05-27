@@ -7,7 +7,7 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 		<TmdbAccessTokenSettings />
 	</main>
 
-	<footer class="flex flex-col items-center gap-2 text-gray-600">
+	<footer class="m-4 flex flex-col items-center gap-2 text-gray-600">
 		<small>
 			Icons made from
 			<a class="underline" href="https://www.onlinewebfonts.com/icon" target="_blank">
