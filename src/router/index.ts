@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import MoviesView from '@/views/MoviesView.vue';
+import MoviesListView from '@/views/MoviesListView.vue';
 import SettingsView from '@/views/SettingsView.vue';
-import TvView from '@/views/TvView.vue';
+import TvListView from '@/views/TvListView.vue';
 import TvDetailsView from '@/views/TvDetailsView.vue';
 import MovieDetailsView from '@/views/MovieDetailsView.vue';
 
@@ -28,7 +28,7 @@ const router = createRouter({
 		{
 			path: '/movies',
 			name: 'movies',
-			component: MoviesView,
+			component: MoviesListView,
 			meta: {
 				title: 'Movies',
 			},
@@ -46,7 +46,7 @@ const router = createRouter({
 		{
 			path: '/tv',
 			name: 'tv',
-			component: TvView,
+			component: TvListView,
 			meta: {
 				title: 'TV',
 			},
