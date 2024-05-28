@@ -12,6 +12,7 @@ import SortOptions from '@/components/filters/SortOptions.vue';
 import type { SortOptionFull } from '@/types/tmdb';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 import Button from 'primevue/button';
+import { RouterLink } from 'vue-router';
 
 const tmdbAccessTokenStore = useTmdbAccessToken();
 
@@ -197,17 +198,21 @@ async function checkIfMoreExist() {
 
 				<div class="grid gap-4">
 					<ScaleTransitionGroup>
-						<PosterCard
+						<RouterLink
 							v-for="show in filteredShows"
 							:key="show.id"
-							:linkLocation="`tv/${show.id}`"
-							:releaseDate="new Date(show.first_air_date)"
-							:posterPath="show.poster_path"
-							:popularity="show.popularity"
-							:voteAverage="show.vote_average"
-							:voteCount="show.vote_count"
-							:name="show.name"
-						/>
+							:to="{ name: 'tvDetails', params: { id: show.id } }"
+							class="visited:text-gray-400"
+						>
+							<PosterCard
+								:releaseDate="new Date(show.first_air_date)"
+								:posterPath="show.poster_path"
+								:popularity="show.popularity"
+								:voteAverage="show.vote_average"
+								:voteCount="show.vote_count"
+								:name="show.name"
+							/>
+						</RouterLink>
 					</ScaleTransitionGroup>
 				</div>
 

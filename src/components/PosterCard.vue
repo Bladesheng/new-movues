@@ -7,11 +7,6 @@ const props = defineProps({
 		type: Date,
 	},
 
-	linkLocation: {
-		required: true,
-		type: String,
-	},
-
 	posterPath: {
 		required: true,
 		type: String,
@@ -73,11 +68,7 @@ const dateLocaleFormatted = computed(() => {
 </script>
 
 <template>
-	<a
-		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 visited:text-gray-400"
-		:href="`https://www.themoviedb.org/${props.linkLocation}`"
-		target="_blank"
-	>
+	<div class="group relative flex flex-col overflow-hidden rounded border border-gray-300">
 		<div class="relative flex flex-grow overflow-hidden">
 			<img
 				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"
@@ -115,7 +106,7 @@ const dateLocaleFormatted = computed(() => {
 		<div class="flex h-12 items-center justify-center text-center text-sm" :title="props.name">
 			{{ props.name }}
 		</div>
-	</a>
+	</div>
 </template>
 
 <style scoped></style>

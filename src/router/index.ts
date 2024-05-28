@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue';
 import MoviesView from '@/views/MoviesView.vue';
 import SettingsView from '@/views/SettingsView.vue';
 import TvView from '@/views/TvView.vue';
+import TvDetailsView from '@/views/TvDetailsView.vue';
+import MovieDetailsView from '@/views/MovieDetailsView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,15 +17,6 @@ const router = createRouter({
 		},
 
 		{
-			path: '/movies',
-			name: 'movies',
-			component: MoviesView,
-			meta: {
-				title: 'Movies',
-			},
-		},
-
-		{
 			path: '/settings',
 			name: 'settings',
 			component: SettingsView,
@@ -33,9 +26,36 @@ const router = createRouter({
 		},
 
 		{
+			path: '/movies',
+			name: 'movies',
+			component: MoviesView,
+			meta: {
+				title: 'Movies',
+			},
+		},
+
+		{
+			path: '/movies/:id',
+			name: 'movieDetails',
+			component: MovieDetailsView,
+			meta: {
+				title: 'Movies',
+			},
+		},
+
+		{
 			path: '/tv',
 			name: 'tv',
 			component: TvView,
+			meta: {
+				title: 'TV',
+			},
+		},
+
+		{
+			path: '/tv/:id',
+			name: 'tvDetails',
+			component: TvDetailsView,
 			meta: {
 				title: 'TV',
 			},
