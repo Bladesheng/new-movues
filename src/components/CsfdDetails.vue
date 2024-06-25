@@ -24,11 +24,7 @@ const props = defineProps({
 				}"
 			>
 				<a :href="props.csfdMovie.url" target="_blank">
-					<img
-						class="h-16 w-16"
-						src="https://img.csfd.cz/documents/marketing/logos/icon-white-transparent/icon-white-transparent.svg"
-						alt="csfd logo"
-					/>
+					<img class="h-16 w-16" src="/csfdLogo.svg" alt="csfd logo" />
 				</a>
 
 				<strong class="text-4xl">{{ props.csfdMovie.rating ?? '? ' }}%</strong>
