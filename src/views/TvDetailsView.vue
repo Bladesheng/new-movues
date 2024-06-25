@@ -5,6 +5,7 @@ import type { AppendToResponse, TvShowDetails } from 'tmdb-ts';
 import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import { ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
+import CsfdDetails from '@/components/CsfdDetails.vue';
 
 const route = useRoute();
 
@@ -42,13 +43,25 @@ async function getCsfd(name: string, year: number) {
 </script>
 
 <template>
-	<a :href="`https://www.themoviedb.org/tv/${route.params.id}`"> tv details </a>
+	<div class="m-4 flex">
+		<div class="grow">
+			<a class="block" target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">
+				tv details
+			</a>
 
-	<div v-if="tmdbRes === undefined">loading tmdb</div>
-	<div v-else>tmdb: {{ tmdbRes.name }}</div>
+			<div v-if="tmdbRes === undefined">@TODO loading tmdb</div>
 
-	<div v-if="csfdRes === undefined">loading csfd</div>
-	<div v-else>csfd: {{ csfdRes.title }}</div>
+			<template v-else>tmdb: {{ tmdbRes.name }}</template>
+		</div>
+
+		<div>
+			<div v-if="csfdRes === undefined">@TODO loading csfd</div>
+
+			<template v-else>
+				<CsfdDetails :csfdMovie="csfdRes" />
+			</template>
+		</div>
+	</div>
 </template>
 
 <style scoped></style>
