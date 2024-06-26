@@ -4,6 +4,7 @@ import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import { type AppendToResponse, type MovieDetails, TMDB } from 'tmdb-ts';
 import { ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
+import { getCsfdMovie } from '@/api/csfdApi';
 
 const route = useRoute();
 
@@ -11,7 +12,7 @@ const tmdbAccessTokenStore = useTmdbAccessToken();
 const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 const tmdbRes = ref<AppendToResponse<MovieDetails, ('videos' | 'credits')[], 'tvShow'>>();
-const csfdRes = ref<CSFDMovie>();
+const csfdMovie = ref<CSFDMovie>();
 
 const movieId = parseInt(route.params.id as string);
 
@@ -26,26 +27,11 @@ async function getDetails() {
 
 	console.log(res);
 
-	await getCsfd(res.title, new Date(res.release_date).getFullYear());
-}
+	const csfdRes = await getCsfdMovie('movie', res.title, new Date(res.release_date).getFullYear());
 
-async function getCsfd(name: string, year: number) {
-	const res = await fetch(
-		`https://csfd.worker.bladesheng.com/detail/movie?name=${name}&year=${year}`
-	);
+	console.log(csfdRes);
 
-	let body = await res.json();
-
-	if (body.status === 404) {
-		// try again, this time without the year - movies sometimes get delayed - csfd and tmdb can be out of sync
-		const res = await fetch(`https://csfd.worker.bladesheng.com/detail/movie?name=${name}`);
-
-		body = await res.json();
-	}
-
-	csfdRes.value = body;
-
-	console.log(body);
+	csfdMovie.value = csfdRes;
 }
 </script>
 

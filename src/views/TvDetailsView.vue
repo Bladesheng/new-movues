@@ -8,6 +8,7 @@ import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
 import CsfdDetails from '@/components/CsfdDetails.vue';
 import Skeleton from 'primevue/skeleton';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
+import { getCsfdMovie } from '@/api/csfdApi';
 
 const route = useRoute();
 
@@ -15,7 +16,7 @@ const tmdbAccessTokenStore = useTmdbAccessToken();
 const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 const tmdbRes = ref<AppendToResponse<TvShowDetails, ('videos' | 'credits')[], 'tvShow'>>();
-const csfdRes = ref<CSFDMovie>();
+const csfdMovie = ref<CSFDMovie>();
 
 const tvId = parseInt(route.params.id as string);
 
@@ -30,24 +31,11 @@ async function getDetails() {
 
 	console.log(res);
 
-	await getCsfd(res.name, new Date(res.first_air_date).getFullYear());
-}
+	const csfdRes = await getCsfdMovie('tv', res.name, new Date(res.first_air_date).getFullYear());
 
-async function getCsfd(name: string, year: number) {
-	const res = await fetch(`https://csfd.worker.bladesheng.com/detail/tv?name=${name}&year=${year}`);
+	console.log(csfdRes);
 
-	let body = await res.json();
-
-	if (body.status === 404) {
-		// try again, this time without the year - movies sometimes get delayed - csfd and tmdb can be out of sync
-		const res = await fetch(`https://csfd.worker.bladesheng.com/tv/movie?name=${name}`);
-
-		body = await res.json();
-	}
-
-	csfdRes.value = body;
-
-	console.log(body);
+	csfdMovie.value = csfdRes;
 }
 </script>
 
@@ -72,12 +60,12 @@ async function getCsfd(name: string, year: number) {
 		</div>
 
 		<div>
-			<template v-if="csfdRes === undefined">
+			<template v-if="csfdMovie === undefined">
 				<Skeleton width="16rem" height="25rem" />
 			</template>
 
 			<template v-else>
-				<CsfdDetails :csfdMovie="csfdRes" />
+				<CsfdDetails :csfdMovie="csfdMovie" />
 			</template>
 		</div>
 	</div>
