@@ -9,6 +9,7 @@ import CsfdDetails from '@/components/CsfdDetails.vue';
 import Skeleton from 'primevue/skeleton';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import { getCsfdMovie } from '@/api/csfdApi';
+import TmdbDetails from '@/components/TmdbDetails.vue';
 
 const route = useRoute();
 
@@ -49,13 +50,12 @@ async function getDetails() {
 			</template>
 
 			<template v-else>
-				<div>
-					<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">
-						tv details
-					</a>
-
-					<div>tmdb: {{ tmdbRes.name }}</div>
-				</div>
+				<TmdbDetails
+					:name="tmdbRes.name"
+					:year="tmdbRes.first_air_date.substring(0, 4)"
+					:posterPath="tmdbRes.poster_path"
+					:genres="tmdbRes.genres"
+				/>
 			</template>
 		</div>
 
