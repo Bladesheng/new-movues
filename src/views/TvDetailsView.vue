@@ -36,7 +36,14 @@ async function getDetails() {
 async function getCsfd(name: string, year: number) {
 	const res = await fetch(`https://csfd.worker.bladesheng.com/detail/tv?name=${name}&year=${year}`);
 
-	const body = await res.json();
+	let body = await res.json();
+
+	if (body.status === 404) {
+		// try again, this time without the year - movies sometimes get delayed - csfd and tmdb can be out of sync
+		const res = await fetch(`https://csfd.worker.bladesheng.com/tv/movie?name=${name}`);
+
+		body = await res.json();
+	}
 
 	csfdRes.value = body;
 
