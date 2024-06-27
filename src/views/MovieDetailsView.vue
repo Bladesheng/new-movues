@@ -11,7 +11,8 @@ const route = useRoute();
 const tmdbAccessTokenStore = useTmdbAccessToken();
 const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
-const tmdbRes = ref<AppendToResponse<MovieDetails, ('videos' | 'credits')[], 'tvShow'>>();
+const tmdbRes =
+	ref<AppendToResponse<MovieDetails, ('videos' | 'credits' | 'keywords' | 'images')[], 'tvShow'>>();
 const csfdMovie = ref<CSFDMovie>();
 
 const movieId = parseInt(route.params.id as string);
@@ -19,7 +20,11 @@ const movieId = parseInt(route.params.id as string);
 getDetails();
 
 async function getDetails() {
-	const res = await tmdb.movies.details(movieId, ['videos', 'credits']);
+	const res = await tmdb.movies.details(
+		movieId,
+		['videos', 'credits', 'keywords', 'images'],
+		'en,null'
+	);
 
 	tmdbRes.value = res;
 
