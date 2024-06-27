@@ -55,6 +55,7 @@ async function getDetails() {
 					:year="tmdbRes.first_air_date.substring(0, 4)"
 					:posterPath="tmdbRes.poster_path"
 					:genres="tmdbRes.genres"
+					:rating="tmdbRes.vote_average"
 				/>
 			</template>
 		</div>

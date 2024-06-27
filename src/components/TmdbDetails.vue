@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
-import type { PropType } from 'vue';
+import { computed, type PropType } from 'vue';
 import type { Genre } from 'tmdb-ts';
 import Chip from 'primevue/chip';
+import Knob from 'primevue/knob';
 
 const props = defineProps({
 	name: {
@@ -25,6 +26,15 @@ const props = defineProps({
 		required: true,
 		type: Array as PropType<Genre[]>,
 	},
+
+	rating: {
+		required: true,
+		type: Number,
+	},
+});
+
+const ratingRounded = computed(() => {
+	return Math.round(props.rating * 10);
 });
 
 const route = useRoute();
@@ -38,6 +48,8 @@ const route = useRoute();
 			<div class="flex gap-2">
 				<Chip v-for="genre in props.genres" :label="genre.name" />
 			</div>
+
+			<Knob v-model="ratingRounded" valueTemplate="{value}%" />
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
 
