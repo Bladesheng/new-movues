@@ -65,6 +65,7 @@ async function getDetails() {
 					:rating="tmdbRes.vote_average"
 					:tagline="tmdbRes.tagline"
 					:overview="tmdbRes.overview"
+					:createdBy="tmdbRes.credits.crew[0]"
 				/>
 			</template>
 		</div>

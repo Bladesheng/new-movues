@@ -2,7 +2,7 @@
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
-import type { Genre } from 'tmdb-ts';
+import type { Crew, Genre } from 'tmdb-ts';
 import Chip from 'primevue/chip';
 import Knob from 'primevue/knob';
 
@@ -41,6 +41,11 @@ const props = defineProps({
 		required: true,
 		type: String,
 	},
+
+	createdBy: {
+		required: true,
+		type: Object as PropType<Crew>,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -66,6 +71,11 @@ const route = useRoute();
 			<strong class="block">Overview</strong>
 
 			<p>{{ props.overview }}</p>
+
+			<div>
+				<strong>{{ props.createdBy.name }}</strong>
+				<span>&nbsp;({{ props.createdBy.department }})</span>
+			</div>
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
 
