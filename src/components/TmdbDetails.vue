@@ -3,6 +3,7 @@ import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import type { PropType } from 'vue';
 import type { Genre } from 'tmdb-ts';
+import Chip from 'primevue/chip';
 
 const props = defineProps({
 	name: {
@@ -34,10 +35,8 @@ const route = useRoute();
 		<template #content>
 			<div>{{ props.name }} ({{ props.year }})</div>
 
-			<div>
-				<span v-for="genre in props.genres">
-					{{ genre.name }}
-				</span>
+			<div class="flex gap-2">
+				<Chip v-for="genre in props.genres" :label="genre.name" />
 			</div>
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
