@@ -56,6 +56,8 @@ async function getDetails() {
 					:posterPath="tmdbRes.poster_path"
 					:genres="tmdbRes.genres"
 					:rating="tmdbRes.vote_average"
+					:tagline="tmdbRes.tagline"
+					:overview="tmdbRes.overview"
 				/>
 			</template>
 		</div>

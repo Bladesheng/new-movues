@@ -31,6 +31,16 @@ const props = defineProps({
 		required: true,
 		type: Number,
 	},
+
+	tagline: {
+		required: true,
+		type: String,
+	},
+
+	overview: {
+		required: true,
+		type: String,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -41,7 +51,7 @@ const route = useRoute();
 </script>
 
 <template>
-	<Card class="w-64">
+	<Card>
 		<template #content>
 			<div>{{ props.name }} ({{ props.year }})</div>
 
@@ -50,6 +60,12 @@ const route = useRoute();
 			</div>
 
 			<Knob v-model="ratingRounded" valueTemplate="{value}%" />
+
+			<i class="block text-gray-500">{{ props.tagline }}</i>
+
+			<strong class="block">Overview</strong>
+
+			<p>{{ props.overview }}</p>
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
 
