@@ -51,6 +51,11 @@ const props = defineProps({
 		required: true,
 		type: Array as PropType<Keyword[]>,
 	},
+
+	runtimeText: {
+		required: false,
+		type: String,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -87,6 +92,8 @@ const route = useRoute();
 			<div class="flex flex-wrap gap-2">
 				<Chip v-for="keyword in props.keywords" :label="keyword.name" class="text-xs" />
 			</div>
+
+			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
 

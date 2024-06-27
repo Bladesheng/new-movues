@@ -3,7 +3,7 @@ import { useRoute } from 'vue-router';
 import { TMDB } from 'tmdb-ts';
 import type { AppendToResponse, TvShowDetails } from 'tmdb-ts';
 import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
 import CsfdDetails from '@/components/CsfdDetails.vue';
 import Skeleton from 'primevue/skeleton';
@@ -25,6 +25,26 @@ const csfdMovie = ref<CSFDMovie>();
 const tvId = parseInt(route.params.id as string);
 
 getDetails();
+
+const runtimeText = computed(() => {
+	if (
+		tmdbRes.value === undefined ||
+		csfdMovie.value === undefined ||
+		csfdMovie.value.duration === null
+	) {
+		return undefined;
+	}
+
+	const runtimeTotal = Number(csfdMovie.value.duration);
+	const episodesCount = tmdbRes.value.number_of_episodes;
+
+	const episodeRuntime = Math.round(runtimeTotal / episodesCount);
+
+	const hours = Math.floor(runtimeTotal / 60);
+	const minutes = Math.floor(runtimeTotal % 60);
+
+	return `${hours} h ${minutes} min (${episodesCount} x ${episodeRuntime} min)`;
+});
 
 async function getDetails() {
 	const res = await tmdb.tvShows.details(
@@ -67,6 +87,7 @@ async function getDetails() {
 					:overview="tmdbRes.overview"
 					:createdBy="tmdbRes.credits.crew[0]"
 					:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
+					:runtimeText="runtimeText"
 				/>
 			</template>
 		</div>
