@@ -66,6 +66,7 @@ async function getDetails() {
 					:tagline="tmdbRes.tagline"
 					:overview="tmdbRes.overview"
 					:createdBy="tmdbRes.credits.crew[0]"
+					:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
 				/>
 			</template>
 		</div>
