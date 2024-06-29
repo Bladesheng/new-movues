@@ -2,7 +2,7 @@
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
-import type { Crew, Genre, Keyword } from 'tmdb-ts';
+import type { Crew, Genre, Keyword, Network } from 'tmdb-ts';
 import Chip from 'primevue/chip';
 import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
@@ -57,6 +57,11 @@ const props = defineProps({
 		required: false,
 		type: String,
 	},
+
+	networks: {
+		required: false,
+		type: Array as PropType<Network[]>,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -98,15 +103,24 @@ const route = useRoute();
 				<Chip v-for="keyword in props.keywords" :label="keyword.name" class="text-xs" />
 			</div>
 
+			<template v-if="props.networks !== undefined">
+				<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
+
+				<div class="flex flex-col items-start gap-2">
+					<img
+						v-for="network in props.networks"
+						:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
+						:alt="network.name"
+						:title="network.name"
+					/>
+				</div>
+			</template>
+
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
 			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
 
-			<img
-				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"
-				alt="show poster"
-				class="duration-200 group-hover:scale-105"
-			/>
+			<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="show poster" />
 		</template>
 	</Card>
 </template>

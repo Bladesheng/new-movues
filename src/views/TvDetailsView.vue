@@ -88,6 +88,7 @@ async function getDetails() {
 					:createdBy="tmdbRes.credits.crew[0]"
 					:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
 					:runtimeText="runtimeText"
+					:networks="tmdbRes.networks"
 				/>
 			</template>
 		</div>
