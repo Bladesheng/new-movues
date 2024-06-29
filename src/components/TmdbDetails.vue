@@ -3,7 +3,7 @@ import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
 import type { Cast, Crew, Genre, Keyword, Network, Video } from 'tmdb-ts';
-import Chip from 'primevue/chip';
+import Tag from 'primevue/tag';
 import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 import CastList from '@/components/CastList.vue';
@@ -98,7 +98,7 @@ const route = useRoute();
 			</div>
 
 			<div class="flex gap-2">
-				<Chip v-for="genre in props.genres" :label="genre.name" />
+				<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
 			</div>
 
 			<Knob v-model="ratingRounded" valueTemplate="{value}%" />
@@ -117,7 +117,7 @@ const route = useRoute();
 			<strong class="block">Keywords</strong>
 
 			<div class="flex flex-wrap gap-2">
-				<Chip v-for="keyword in props.keywords" :label="keyword.name" class="text-xs" />
+				<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
 			</div>
 
 			<template v-if="props.networks !== undefined">
