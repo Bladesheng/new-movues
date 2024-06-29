@@ -2,10 +2,11 @@
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
-import type { Crew, Genre, Keyword, Network } from 'tmdb-ts';
+import type { Cast, Crew, Genre, Keyword, Network } from 'tmdb-ts';
 import Chip from 'primevue/chip';
 import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
+import CastList from '@/components/CastList.vue';
 
 const props = defineProps({
 	name: {
@@ -62,6 +63,11 @@ const props = defineProps({
 		required: false,
 		type: Array as PropType<Network[]>,
 	},
+
+	cast: {
+		required: true,
+		type: Array as PropType<Cast[]>,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -72,7 +78,12 @@ const route = useRoute();
 </script>
 
 <template>
-	<Card>
+	<Card
+		class="flex min-w-0 grow"
+		:pt="{
+			body: 'min-w-0',
+		}"
+	>
 		<template #content>
 			<div>{{ props.name }}</div>
 
@@ -115,6 +126,9 @@ const route = useRoute();
 					/>
 				</div>
 			</template>
+
+			<strong class="block">Cast</strong>
+			<CastList :actors="props.cast" />
 
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 

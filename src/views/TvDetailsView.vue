@@ -69,7 +69,7 @@ async function getDetails() {
 
 <template>
 	<div class="m-4 flex gap-4">
-		<div class="flex grow">
+		<div class="flex min-w-0 grow">
 			<template v-if="tmdbRes === undefined">
 				<div class="flex grow items-center justify-center">
 					<LoadingSpinner class="h-20 w-20 text-emerald-500" />
@@ -89,6 +89,7 @@ async function getDetails() {
 					:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
 					:runtimeText="runtimeText"
 					:networks="tmdbRes.networks"
+					:cast="tmdbRes.credits.cast.slice(0, 10)"
 				/>
 			</template>
 		</div>
