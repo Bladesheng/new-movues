@@ -2,11 +2,12 @@
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
-import type { Cast, Crew, Genre, Keyword, Network } from 'tmdb-ts';
+import type { Cast, Crew, Genre, Keyword, Network, Video } from 'tmdb-ts';
 import Chip from 'primevue/chip';
 import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 import CastList from '@/components/CastList.vue';
+import YoutubeTrailers from '@/components/YoutubeTrailers.vue';
 
 const props = defineProps({
 	name: {
@@ -67,6 +68,11 @@ const props = defineProps({
 	cast: {
 		required: true,
 		type: Array as PropType<Cast[]>,
+	},
+
+	videos: {
+		required: true,
+		type: Array as PropType<Video[]>,
 	},
 });
 
@@ -129,6 +135,9 @@ const route = useRoute();
 
 			<strong class="block">Cast</strong>
 			<CastList :actors="props.cast" />
+
+			<strong class="block">Trailer</strong>
+			<YoutubeTrailers :videos="props.videos" />
 
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 

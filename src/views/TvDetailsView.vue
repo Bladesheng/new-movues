@@ -90,6 +90,7 @@ async function getDetails() {
 					:runtimeText="runtimeText"
 					:networks="tmdbRes.networks"
 					:cast="tmdbRes.credits.cast.slice(0, 10)"
+					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
 				/>
 			</template>
 		</div>
