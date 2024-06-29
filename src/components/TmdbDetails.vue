@@ -146,12 +146,12 @@ const route = useRoute();
 
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
-			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">
-				TMDB link @TODO logo
+			<a :href="`https://www.themoviedb.org/tv/${route.params.id}`" target="_blank">
+				<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
 			</a>
 
-			<a target="_blank" :href="`https://www.imdb.com/title/${props.imdbId}`">
-				IMDb link @TODO logo
+			<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
+				<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
 			</a>
 
 			<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="show poster" />
