@@ -23,7 +23,7 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 				target="_blank"
 				class="inline-flex items-center gap-1 text-black"
 			>
-				<img src="/github-mark.svg" alt="github-mark" class="inline h-5" />
+				<img src="/github-mark.svg" class="inline h-5" alt="github-mark" />
 				Bladesheng
 			</a>
 		</small>
@@ -35,7 +35,7 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 				API but is not endorsed or certified by TMDB
 			</small>
 
-			<img src="/tmdb.svg" alt="github-mark" class="h-3" />
+			<img src="/tmdbLogoAltShort.svg" class="h-3" alt="tmdb logo" />
 		</div>
 	</footer>
 </template>
