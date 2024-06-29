@@ -74,6 +74,11 @@ const props = defineProps({
 		required: true,
 		type: Array as PropType<Video[]>,
 	},
+
+	imdbId: {
+		required: true,
+		type: String,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -141,7 +146,13 @@ const route = useRoute();
 
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
-			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">TMDB link</a>
+			<a target="_blank" :href="`https://www.themoviedb.org/tv/${route.params.id}`">
+				TMDB link @TODO logo
+			</a>
+
+			<a target="_blank" :href="`https://www.imdb.com/title/${props.imdbId}`">
+				IMDb link @TODO logo
+			</a>
 
 			<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="show poster" />
 		</template>

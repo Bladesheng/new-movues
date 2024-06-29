@@ -18,7 +18,11 @@ const tmdb = new TMDB(tmdbAccessTokenStore.token);
 
 const tmdbRes =
 	ref<
-		AppendToResponse<TvShowDetails, ('videos' | 'credits' | 'keywords' | 'images')[], 'tvShow'>
+		AppendToResponse<
+			TvShowDetails,
+			('videos' | 'credits' | 'keywords' | 'images' | 'external_ids')[],
+			'tvShow'
+		>
 	>();
 const csfdMovie = ref<CSFDMovie>();
 
@@ -49,7 +53,7 @@ const runtimeText = computed(() => {
 async function getDetails() {
 	const res = await tmdb.tvShows.details(
 		tvId,
-		['videos', 'credits', 'keywords', 'images'],
+		['videos', 'credits', 'keywords', 'images', 'external_ids'],
 		'null,en'
 	);
 
@@ -91,6 +95,7 @@ async function getDetails() {
 					:networks="tmdbRes.networks"
 					:cast="tmdbRes.credits.cast.slice(0, 10)"
 					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
+					:imdbId="tmdbRes.external_ids.imdb_id"
 				/>
 			</template>
 		</div>
