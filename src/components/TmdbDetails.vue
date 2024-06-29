@@ -5,6 +5,7 @@ import { computed, type PropType } from 'vue';
 import type { Crew, Genre, Keyword } from 'tmdb-ts';
 import Chip from 'primevue/chip';
 import Knob from 'primevue/knob';
+import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 
 const props = defineProps({
 	name: {
@@ -17,9 +18,9 @@ const props = defineProps({
 		type: String,
 	},
 
-	year: {
+	releaseDate: {
 		required: true,
-		type: String,
+		type: Date,
 	},
 
 	genres: {
@@ -68,7 +69,11 @@ const route = useRoute();
 <template>
 	<Card>
 		<template #content>
-			<div>{{ props.name }} ({{ props.year }})</div>
+			<div>{{ props.name }}</div>
+
+			<div>
+				{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})
+			</div>
 
 			<div class="flex gap-2">
 				<Chip v-for="genre in props.genres" :label="genre.name" />
@@ -76,7 +81,7 @@ const route = useRoute();
 
 			<Knob v-model="ratingRounded" valueTemplate="{value}%" />
 
-			<i class="block text-gray-500">{{ props.tagline }}</i>
+			<em class="block text-gray-500">{{ props.tagline }}</em>
 
 			<strong class="block">Overview</strong>
 

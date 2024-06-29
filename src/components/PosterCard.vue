@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { getFullDateFormatted, getDaysLeft } from '@/utils/date';
 
 const props = defineProps({
 	releaseDate: {
@@ -32,39 +32,6 @@ const props = defineProps({
 		type: String,
 	},
 });
-
-const daysUntilAir = computed(() => {
-	const now = new Date();
-
-	const diff = props.releaseDate.getTime() - now.getTime();
-
-	const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-
-	if (daysLeft <= -2) {
-		return `${daysLeft * -1} days ago`;
-	} else if (daysLeft === -1) {
-		return 'Yesterday';
-	} else if (daysLeft === 0) {
-		return 'Today';
-	} else if (daysLeft === 1) {
-		return 'Tomorrow';
-	} else {
-		return `in ${daysLeft} days`;
-	}
-});
-
-const dateLocaleFormatted = computed(() => {
-	// @TODO add locale override to settings
-	// const locale = navigator.language;
-	const locale = 'cs-CZ';
-
-	return props.releaseDate.toLocaleDateString(locale, {
-		weekday: 'long',
-		day: 'numeric',
-		month: 'numeric',
-		year: 'numeric',
-	});
-});
 </script>
 
 <template>
@@ -95,11 +62,11 @@ const dateLocaleFormatted = computed(() => {
 
 		<div class="absolute left-0 top-0 rounded-br bg-black bg-opacity-50 px-1 py-0.5 text-white">
 			<span class="group-hover:hidden">
-				{{ daysUntilAir }}
+				{{ getDaysLeft(props.releaseDate) }}
 			</span>
 
 			<span class="hidden text-sm group-hover:inline">
-				{{ dateLocaleFormatted }}
+				{{ getFullDateFormatted(props.releaseDate) }}
 			</span>
 		</div>
 

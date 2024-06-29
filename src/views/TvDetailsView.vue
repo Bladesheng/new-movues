@@ -79,7 +79,7 @@ async function getDetails() {
 			<template v-else>
 				<TmdbDetails
 					:name="tmdbRes.name"
-					:year="tmdbRes.first_air_date.substring(0, 4)"
+					:releaseDate="new Date(tmdbRes.first_air_date)"
 					:posterPath="tmdbRes.poster_path"
 					:genres="tmdbRes.genres"
 					:rating="tmdbRes.vote_average"
