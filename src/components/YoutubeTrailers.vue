@@ -17,12 +17,24 @@ const props = defineProps({
 
 const isModalVisible = ref(false);
 
-const latestTrailer = computed(() => {
-	const trailers = props.videos.filter((video) => {
+const mostRelevantVideo = computed(() => {
+	let mostRelevantVideos = props.videos.filter((video) => {
 		return video.type === 'Trailer';
 	});
 
-	return trailers[0];
+	// no trailers, try teasers
+	if (mostRelevantVideos.length === 0) {
+		mostRelevantVideos = props.videos.filter((video) => {
+			return video.type === 'Teaser';
+		});
+	}
+
+	// no teasers either, try whatever is left
+	if (mostRelevantVideos.length === 0) {
+		mostRelevantVideos = props.videos;
+	}
+
+	return mostRelevantVideos[0];
 });
 
 const videoGroups = computed(() => {
@@ -35,15 +47,15 @@ const videoGroups = computed(() => {
 </script>
 
 <template>
-	<div class="flex flex-col gap-2">
+	<div v-if="props.videos.length > 0" class="flex flex-col gap-2">
 		<div class="flex justify-between">
-			<SectionHeading>Trailer</SectionHeading>
+			<SectionHeading>{{ mostRelevantVideo.type }}</SectionHeading>
 
 			<Button label="More videos" @click="isModalVisible = true" class="px-2 py-1" />
 		</div>
 
 		<div class="trailerMain">
-			<YoutubeIframe :videoKey="latestTrailer.key" />
+			<YoutubeIframe :videoKey="mostRelevantVideo.key" />
 		</div>
 	</div>
 
