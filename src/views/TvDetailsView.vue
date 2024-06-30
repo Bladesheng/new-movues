@@ -72,45 +72,43 @@ async function getDetails() {
 </script>
 
 <template>
-	<div class="m-4 flex gap-4">
-		<div class="flex grow">
-			<template v-if="tmdbRes === undefined">
-				<div class="flex grow items-center justify-center">
-					<LoadingSpinner class="h-20 w-20 text-emerald-500" />
-				</div>
-			</template>
+	<div class="m-4 flex grow">
+		<template v-if="tmdbRes === undefined">
+			<div class="flex grow items-center justify-center">
+				<LoadingSpinner class="h-20 w-20 text-emerald-500" />
+			</div>
+		</template>
 
-			<template v-else>
-				<TmdbDetails
-					:name="tmdbRes.name"
-					:releaseDate="new Date(tmdbRes.first_air_date)"
-					:posterPath="tmdbRes.poster_path"
-					:genres="tmdbRes.genres"
-					:rating="tmdbRes.vote_average"
-					:tagline="tmdbRes.tagline"
-					:overview="tmdbRes.overview"
-					:createdBy="tmdbRes.credits.crew[0]"
-					:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
-					:runtimeText="runtimeText"
-					:networks="tmdbRes.networks"
-					:cast="tmdbRes.credits.cast.slice(0, 10)"
-					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
-					:tmdbLink="`https://www.themoviedb.org/tv/${route.params.id}`"
-					:imdbId="tmdbRes.external_ids.imdb_id"
-					:images="tmdbRes.images"
-				>
-					<template #csfdCard>
-						<template v-if="csfdMovie === undefined">
-							<Skeleton width="16rem" height="25rem" />
-						</template>
-
-						<template v-else>
-							<CsfdDetails :csfdMovie="csfdMovie" />
-						</template>
+		<template v-else>
+			<TmdbDetails
+				:name="tmdbRes.name"
+				:releaseDate="new Date(tmdbRes.first_air_date)"
+				:posterPath="tmdbRes.poster_path"
+				:genres="tmdbRes.genres"
+				:rating="tmdbRes.vote_average"
+				:tagline="tmdbRes.tagline"
+				:overview="tmdbRes.overview"
+				:createdBy="tmdbRes.credits.crew[0]"
+				:keywords="tmdbRes.keywords.keywords ?? tmdbRes.keywords.results"
+				:runtimeText="runtimeText"
+				:networks="tmdbRes.networks"
+				:cast="tmdbRes.credits.cast.slice(0, 10)"
+				:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
+				:tmdbLink="`https://www.themoviedb.org/tv/${route.params.id}`"
+				:imdbId="tmdbRes.external_ids.imdb_id"
+				:images="tmdbRes.images"
+			>
+				<template #csfdCard>
+					<template v-if="csfdMovie === undefined">
+						<Skeleton width="16rem" height="25rem" />
 					</template>
-				</TmdbDetails>
-			</template>
-		</div>
+
+					<template v-else>
+						<CsfdDetails :csfdMovie="csfdMovie" />
+					</template>
+				</template>
+			</TmdbDetails>
+		</template>
 	</div>
 </template>
 
