@@ -97,17 +97,17 @@ async function getDetails() {
 					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
 					:imdbId="tmdbRes.external_ids.imdb_id"
 					:images="tmdbRes.images"
-				/>
-			</template>
-		</div>
+				>
+					<template #csfdCard>
+						<template v-if="csfdMovie === undefined">
+							<Skeleton width="16rem" height="25rem" />
+						</template>
 
-		<div>
-			<template v-if="csfdMovie === undefined">
-				<Skeleton width="16rem" height="25rem" />
-			</template>
-
-			<template v-else>
-				<CsfdDetails :csfdMovie="csfdMovie" />
+						<template v-else>
+							<CsfdDetails :csfdMovie="csfdMovie" />
+						</template>
+					</template>
+				</TmdbDetails>
 			</template>
 		</div>
 	</div>

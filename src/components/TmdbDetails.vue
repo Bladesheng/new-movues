@@ -163,6 +163,8 @@ const route = useRoute();
 				<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
 			</a>
 
+			<slot name="csfdCard" />
+
 			<Image preview>
 				<template #image>
 					<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
