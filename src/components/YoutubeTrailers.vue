@@ -44,6 +44,61 @@ const videoGroups = computed(() => {
 
 	return groups;
 });
+
+function startDrag(e: MouseEvent) {
+	const currentTarget = e.currentTarget as HTMLElement;
+	const videoContainer = currentTarget.closest('.relevantVideoContainer') as HTMLElement;
+	const iframe = videoContainer.querySelector('iframe') as HTMLIFrameElement;
+
+	const initialWidth = videoContainer.getBoundingClientRect().width;
+	const initialHeight = videoContainer.getBoundingClientRect().height;
+	const initialX = e.pageX;
+	const initialY = e.pageY;
+	const aspectRatio = initialWidth / initialHeight;
+
+	// otherwise iframe would capture the mouseup events and you couldn't stop dragging
+	iframe.classList.add('pointer-events-none');
+
+	// to keep the width after cancelling max width
+	videoContainer.style.width = initialWidth + 'px';
+	videoContainer.style.maxWidth = 'none';
+
+	document.addEventListener('mousemove', resize);
+	document.addEventListener(
+		'mouseup',
+		() => {
+			document.removeEventListener('mousemove', resize);
+			iframe.classList.remove('pointer-events-none');
+		},
+		{
+			once: true,
+		}
+	);
+
+	function resize(e: MouseEvent) {
+		const currentX = e.pageX;
+		const currentY = e.pageY;
+
+		const diffX = currentX - initialX;
+		const diffY = currentY - initialY;
+
+		// new width based only on movement in X axis
+		const xMovementNewWidth = initialWidth + diffX;
+		// videoContainer.style.width = xMovementNewWidth + 'px'; // (this is fine, but moving in Y axis wouldn't do anything)
+
+		const yMovementNewHeight = initialHeight + diffY;
+		// new width based only on movement in Y axis
+		const yMovementNewWidth = yMovementNewHeight * aspectRatio;
+		// videoContainer.style.width = yMovementNewWidth + 'px'; // (this is fine, but moving in X axis wouldn't do anything)
+
+		// now we put both new widths together - basically a weighted average
+		const newWidth =
+			(xMovementNewWidth * initialWidth + yMovementNewWidth * initialHeight) /
+			(initialWidth + initialHeight);
+
+		videoContainer.style.width = newWidth + 'px';
+	}
+}
 </script>
 
 <template>
@@ -54,8 +109,18 @@ const videoGroups = computed(() => {
 			<Button label="More videos" @click="isModalVisible = true" class="px-2 py-1" />
 		</div>
 
-		<div class="trailerMain">
+		<div class="relevantVideoContainer z-10">
 			<YoutubeIframe :videoKey="mostRelevantVideo.key" />
+			<div class="flex">
+				<Button
+					@mousedown="startDrag"
+					class="ml-auto mt-1 rotate-90 cursor-nwse-resize"
+					icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
+					severity="secondary"
+					text
+					aria-label="Bookmark"
+				/>
+			</div>
 		</div>
 	</div>
 
@@ -82,7 +147,8 @@ const videoGroups = computed(() => {
 </template>
 
 <style scoped>
-.trailerMain {
+.relevantVideoContainer {
 	max-width: 1000px;
+	will-change: width;
 }
 </style>
