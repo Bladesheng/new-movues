@@ -96,6 +96,10 @@ function startDrag(e: MouseEvent) {
 			(xMovementNewWidth * initialWidth + yMovementNewWidth * initialHeight) /
 			(initialWidth + initialHeight);
 
+		if (newWidth < 200) {
+			return;
+		}
+
 		videoContainer.style.width = newWidth + 'px';
 	}
 }
