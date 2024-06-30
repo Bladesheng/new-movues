@@ -85,7 +85,7 @@ const props = defineProps({
 
 	imdbId: {
 		required: true,
-		type: String,
+		type: [String, null],
 	},
 
 	images: {
@@ -175,7 +175,11 @@ const route = useRoute();
 							<strong class="text-nowrap text-4xl">{{ ratingRounded }}%</strong>
 						</div>
 
-						<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
+						<a
+							v-if="props.imdbId !== null"
+							:href="`https://www.imdb.com/title/${props.imdbId}`"
+							target="_blank"
+						>
 							<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
 						</a>
 
