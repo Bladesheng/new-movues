@@ -17,7 +17,7 @@ const isExpanded = ref(false);
 <template>
 	<div>
 		<div
-			class="flex items-center justify-center gap-4 rounded text-white"
+			class="grid grid-cols-3 items-center justify-items-center gap-4 rounded text-white"
 			:class="{
 				colorGood: props.csfdMovie.colorRating === 'good',
 				colorAverage: props.csfdMovie.colorRating === 'average',
