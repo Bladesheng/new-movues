@@ -9,6 +9,7 @@ import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 import CastList from '@/components/CastList.vue';
 import YoutubeTrailers from '@/components/YoutubeTrailers.vue';
 import ImagesGallery from '@/components/ImagesGallery.vue';
+import Image from 'primevue/image';
 
 const props = defineProps({
 	name: {
@@ -162,9 +163,28 @@ const route = useRoute();
 				<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
 			</a>
 
-			<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="show poster" />
+			<Image preview>
+				<template #image>
+					<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
+				</template>
+
+				<template #preview="slotProps">
+					<img
+						:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
+						class="fullImage"
+						alt="poster"
+						:style="slotProps.style"
+						@click="slotProps.onClick"
+					/>
+				</template>
+			</Image>
 		</template>
 	</Card>
 </template>
 
-<style scoped></style>
+<style scoped>
+.fullImage {
+	max-width: 100vw;
+	max-height: 100vh;
+}
+</style>
