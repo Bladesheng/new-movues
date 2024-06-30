@@ -76,6 +76,11 @@ const props = defineProps({
 		type: Array as PropType<Video[]>,
 	},
 
+	tmdbLink: {
+		required: true,
+		type: String,
+	},
+
 	imdbId: {
 		required: true,
 		type: String,
@@ -146,7 +151,7 @@ const route = useRoute();
 
 		<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
-		<a :href="`https://www.themoviedb.org/tv/${route.params.id}`" target="_blank">
+		<a :href="props.tmdbLink" target="_blank">
 			<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
 		</a>
 

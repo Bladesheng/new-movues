@@ -95,6 +95,7 @@ async function getDetails() {
 					:networks="tmdbRes.networks"
 					:cast="tmdbRes.credits.cast.slice(0, 10)"
 					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
+					:tmdbLink="`https://www.themoviedb.org/tv/${route.params.id}`"
 					:imdbId="tmdbRes.external_ids.imdb_id"
 					:images="tmdbRes.images"
 				>
