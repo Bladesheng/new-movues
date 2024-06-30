@@ -17,7 +17,7 @@ const isExpanded = ref(false);
 <template>
 	<div>
 		<div
-			class="grid grid-cols-3 items-center justify-items-center gap-4 rounded text-white"
+			class="grid grid-cols-3 items-center justify-items-center gap-4 text-nowrap rounded text-white"
 			:class="{
 				colorGood: props.csfdMovie.colorRating === 'good',
 				colorAverage: props.csfdMovie.colorRating === 'average',
@@ -40,7 +40,7 @@ const isExpanded = ref(false);
 			{{ props.csfdMovie.title }}
 		</strong>
 
-		<p>
+		<p v-if="props.csfdMovie.descriptions[0] !== undefined">
 			{{ props.csfdMovie.descriptions[0].substring(0, isExpanded ? Infinity : MAX_LENGTH) }}
 			<template v-if="!isExpanded && props.csfdMovie.descriptions[0].length > MAX_LENGTH">
 				<span>...</span>
