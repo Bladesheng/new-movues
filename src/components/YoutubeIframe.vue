@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
 	<iframe
 		:src="`https://www.youtube.com/embed/${props.videoKey}`"
-		class="aspect-video w-full"
+		class="aspect-video w-full rounded"
 		title="YouTube video player"
 		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 		referrerpolicy="strict-origin-when-cross-origin"

@@ -6,6 +6,7 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
+import SectionHeading from '@/components/SectionHeading.vue';
 
 const props = defineProps({
 	images: {
@@ -18,28 +19,34 @@ const isModalVisible = ref(false);
 </script>
 
 <template>
-	<div class="flex">
-		<strong class="block">Images</strong>
+	<div class="flex flex-col gap-2">
+		<div class="flex justify-between">
+			<SectionHeading>Images</SectionHeading>
 
-		<Button label="More images" @click="isModalVisible = true" class="px-2 py-1" />
-	</div>
+			<Button label="More images" @click="isModalVisible = true" class="px-2 py-1" />
+		</div>
 
-	<div class="flex flex-col items-start gap-12">
-		<Image v-for="img in props.images.backdrops.slice(0, 3)" preview>
-			<template #image>
-				<img :src="`https://image.tmdb.org/t/p/w780${img.file_path}`" alt="" />
-			</template>
+		<div class="flex flex-col items-start gap-4">
+			<Image
+				v-for="img in props.images.backdrops.slice(0, 3)"
+				preview
+				class="overflow-hidden rounded"
+			>
+				<template #image>
+					<img :src="`https://image.tmdb.org/t/p/w1280${img.file_path}`" alt="" />
+				</template>
 
-			<template #preview="slotProps">
-				<img
-					:src="`https://image.tmdb.org/t/p/original${img.file_path}`"
-					class="fullImage"
-					alt=""
-					:style="slotProps.style"
-					@click="slotProps.onClick"
-				/>
-			</template>
-		</Image>
+				<template #preview="slotProps">
+					<img
+						:src="`https://image.tmdb.org/t/p/original${img.file_path}`"
+						class="fullImage"
+						alt=""
+						:style="slotProps.style"
+						@click="slotProps.onClick"
+					/>
+				</template>
+			</Image>
+		</div>
 	</div>
 
 	<Dialog
@@ -65,6 +72,7 @@ const isModalVisible = ref(false);
 						<img
 							:src="`https://image.tmdb.org/t/p/original${img.file_path}`"
 							loading="lazy"
+							class="rounded"
 							alt=""
 						/>
 					</a>

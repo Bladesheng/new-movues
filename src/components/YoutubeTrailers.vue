@@ -6,6 +6,7 @@ import Dialog from 'primevue/dialog';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import YoutubeIframe from '@/components/YoutubeIframe.vue';
+import SectionHeading from '@/components/SectionHeading.vue';
 
 const props = defineProps({
 	videos: {
@@ -34,15 +35,17 @@ const videoGroups = computed(() => {
 </script>
 
 <template>
-	<div class="trailerMain">
-		<YoutubeIframe :videoKey="latestTrailer.key" />
-	</div>
+	<div class="flex flex-col gap-2">
+		<div class="flex justify-between">
+			<SectionHeading>Trailer</SectionHeading>
 
-	<Button
-		:label="`More videos (${props.videos.length})`"
-		@click="isModalVisible = true"
-		class="px-2 py-1"
-	/>
+			<Button label="More videos" @click="isModalVisible = true" class="px-2 py-1" />
+		</div>
+
+		<div class="trailerMain">
+			<YoutubeIframe :videoKey="latestTrailer.key" />
+		</div>
+	</div>
 
 	<Dialog
 		v-model:visible="isModalVisible"

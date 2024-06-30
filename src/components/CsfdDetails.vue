@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
-import Card from 'primevue/card';
 
 const props = defineProps({
 	csfdMovie: {
@@ -12,37 +11,35 @@ const props = defineProps({
 </script>
 
 <template>
-	<Card class="w-64">
-		<template #content>
-			<div
-				class="flex items-center justify-center gap-4 rounded text-white"
-				:class="{
-					colorGood: props.csfdMovie.colorRating === 'good',
-					colorAverage: props.csfdMovie.colorRating === 'average',
-					colorBad: props.csfdMovie.colorRating === 'bad',
-					colorUnknown: props.csfdMovie.colorRating === 'unknown',
-				}"
-			>
-				<a :href="props.csfdMovie.url" target="_blank">
-					<img class="h-16 w-16" src="/csfdLogo.svg" alt="csfd logo" />
-				</a>
+	<div>
+		<div
+			class="flex items-center justify-center gap-4 rounded text-white"
+			:class="{
+				colorGood: props.csfdMovie.colorRating === 'good',
+				colorAverage: props.csfdMovie.colorRating === 'average',
+				colorBad: props.csfdMovie.colorRating === 'bad',
+				colorUnknown: props.csfdMovie.colorRating === 'unknown',
+			}"
+		>
+			<a :href="props.csfdMovie.url" target="_blank">
+				<img class="h-16 w-16" src="/csfdLogo.svg" alt="csfd logo" />
+			</a>
 
-				<strong class="text-4xl">{{ props.csfdMovie.rating ?? '? ' }}%</strong>
+			<strong class="text-4xl">{{ props.csfdMovie.rating ?? '? ' }}%</strong>
 
-				<span v-if="props.csfdMovie.rating !== null" class="mr-2 text-xl">
-					({{ props.csfdMovie.ratingCount }})
-				</span>
-			</div>
+			<span v-if="props.csfdMovie.rating !== null" class="mr-2 text-xl">
+				({{ props.csfdMovie.ratingCount }})
+			</span>
+		</div>
 
-			<strong class="mt-4 block text-lg">
-				{{ props.csfdMovie.title }}
-			</strong>
+		<strong class="mt-2 block text-lg">
+			{{ props.csfdMovie.title }}
+		</strong>
 
-			<p>
-				{{ props.csfdMovie.descriptions[0] }}
-			</p>
-		</template>
-	</Card>
+		<p>
+			{{ props.csfdMovie.descriptions[0] }}
+		</p>
+	</div>
 </template>
 
 <style scoped>

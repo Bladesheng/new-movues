@@ -3,12 +3,14 @@ import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
 import type { Cast, Crew, Genre, Images, Keyword, Network, Video } from 'tmdb-ts';
 import Tag from 'primevue/tag';
-import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 import CastList from '@/components/CastList.vue';
 import YoutubeTrailers from '@/components/YoutubeTrailers.vue';
 import ImagesGallery from '@/components/ImagesGallery.vue';
 import Image from 'primevue/image';
+import Skeleton from 'primevue/skeleton';
+import Card from 'primevue/card';
+import SectionHeading from '@/components/SectionHeading.vue';
 
 const props = defineProps({
 	name: {
@@ -100,82 +102,113 @@ const route = useRoute();
 </script>
 
 <template>
-	<div class="flex flex-col">
-		<div>{{ props.name }}</div>
+	<div class="flex min-w-0 flex-col gap-4 sm:flex-row">
+		<div class="flex min-w-0 flex-col gap-4">
+			<div class="flex gap-4">
+				<Image preview class="max-w-52 self-start overflow-hidden rounded">
+					<template #image>
+						<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
+					</template>
 
-		<div>{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})</div>
+					<template #preview="slotProps">
+						<img
+							:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
+							class="fullImage"
+							alt="poster"
+							:style="slotProps.style"
+							@click="slotProps.onClick"
+						/>
+					</template>
+				</Image>
 
-		<div class="flex gap-2">
-			<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
-		</div>
+				<div class="flex flex-col gap-2 text-gray-600">
+					<SectionHeading class="text-4xl">{{ props.name }}</SectionHeading>
 
-		<Knob v-model="ratingRounded" valueTemplate="{value}%" />
+					<div class="flex gap-2">
+						<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
+					</div>
 
-		<em class="block text-gray-500">{{ props.tagline }}</em>
+					<div>
+						{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})
+					</div>
 
-		<strong class="block">Overview</strong>
+					<div v-if="props.runtimeText === undefined">
+						<Skeleton width="10rem" height="1.5rem"></Skeleton>
+					</div>
+					<div v-else>{{ props.runtimeText }}</div>
 
-		<p>{{ props.overview }}</p>
+					<div>
+						<strong>{{ props.createdBy.name }}</strong>
+						<span>&nbsp;({{ props.createdBy.department }})</span>
+					</div>
 
-		<div>
-			<strong>{{ props.createdBy.name }}</strong>
-			<span>&nbsp;({{ props.createdBy.department }})</span>
-		</div>
-
-		<strong class="block">Keywords</strong>
-
-		<div class="flex flex-wrap gap-2">
-			<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
-		</div>
-
-		<template v-if="props.networks !== undefined">
-			<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
-
-			<div class="flex flex-col items-start gap-2">
-				<img
-					v-for="network in props.networks"
-					:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
-					:alt="network.name"
-					:title="network.name"
-				/>
+					<div class="flex flex-col gap-0.5">
+						<strong class="block">Overview</strong>
+						<em class="block text-gray-500">{{ props.tagline }}</em>
+						<p class="overview">{{ props.overview }}</p>
+					</div>
+				</div>
 			</div>
-		</template>
 
-		<strong class="block">Cast</strong>
-		<CastList :actors="props.cast" />
+			<div class="flex flex-col gap-4">
+				<CastList :actors="props.cast" />
 
-		<strong class="block">Trailer</strong>
-		<YoutubeTrailers :videos="props.videos" />
+				<YoutubeTrailers :videos="props.videos" />
 
-		<ImagesGallery :images="props.images" />
+				<ImagesGallery :images="props.images" />
+			</div>
+		</div>
 
-		<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
+		<div class="flex shrink-0 flex-col items-stretch gap-4 sm:w-1/4 xl:w-1/5">
+			<Card>
+				<template #title>
+					<SectionHeading>Rating</SectionHeading>
+				</template>
 
-		<a :href="props.tmdbLink" target="_blank">
-			<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
-		</a>
+				<template #content>
+					<div class="flex flex-col gap-4">
+						<div class="flex items-center gap-4">
+							<a :href="props.tmdbLink" target="_blank">
+								<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
+							</a>
 
-		<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
-			<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
-		</a>
+							<strong class="text-nowrap text-4xl">{{ ratingRounded }}%</strong>
+						</div>
 
-		<slot name="csfdCard" />
+						<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
+							<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
+						</a>
 
-		<Image preview>
-			<template #image>
-				<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
+						<slot name="csfdCard" />
+					</div>
+				</template>
+			</Card>
+
+			<Card>
+				<template #title>
+					<SectionHeading>Keywords</SectionHeading>
+				</template>
+
+				<template #content>
+					<div class="flex flex-wrap gap-2">
+						<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
+					</div>
+				</template>
+			</Card>
+
+			<template v-if="props.networks !== undefined">
+				<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
+
+				<div class="flex flex-col items-start gap-2">
+					<img
+						v-for="network in props.networks"
+						:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
+						:alt="network.name"
+						:title="network.name"
+					/>
+				</div>
 			</template>
-
-			<template #preview="slotProps">
-				<img
-					:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
-					class="fullImage"
-					alt="poster"
-					:style="slotProps.style"
-					@click="slotProps.onClick"
-				/>
-			</template>
-		</Image>
+		</div>
 	</div>
 </template>
 
@@ -183,5 +216,9 @@ const route = useRoute();
 .fullImage {
 	max-width: 100vw;
 	max-height: 100vh;
+}
+
+.overview {
+	max-width: 670px;
 }
 </style>
