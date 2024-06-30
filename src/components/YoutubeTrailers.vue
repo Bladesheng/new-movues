@@ -152,7 +152,6 @@ function startDrag(e: MouseEvent) {
 
 <style scoped>
 .relevantVideoContainer {
-	max-width: 1000px;
 	will-change: width;
 }
 </style>
