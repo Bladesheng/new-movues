@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
+import { type PropType, ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
 
 const props = defineProps({
@@ -8,6 +8,10 @@ const props = defineProps({
 		type: Object as PropType<CSFDMovie>,
 	},
 });
+
+const MAX_LENGTH = 150;
+
+const isExpanded = ref(false);
 </script>
 
 <template>
@@ -37,12 +41,20 @@ const props = defineProps({
 		</strong>
 
 		<p>
-			{{ props.csfdMovie.descriptions[0] }}
+			{{ props.csfdMovie.descriptions[0].substring(0, isExpanded ? Infinity : MAX_LENGTH) }}
+			<template v-if="!isExpanded && props.csfdMovie.descriptions[0].length > MAX_LENGTH">
+				<span>...</span>
+				<button @click="isExpanded = true">(<span class="textRed">více</span>)</button>
+			</template>
 		</p>
 	</div>
 </template>
 
 <style scoped>
+.textRed {
+	color: #ba0305;
+}
+
 .colorGood {
 	background-color: #ba0305;
 }

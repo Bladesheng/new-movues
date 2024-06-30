@@ -89,7 +89,7 @@ async function getDetails() {
 			>
 				<template #csfdCard>
 					<template v-if="csfdMovie === undefined">
-						<Skeleton height="25rem" />
+						<Skeleton height="200px" />
 					</template>
 
 					<template v-else>
