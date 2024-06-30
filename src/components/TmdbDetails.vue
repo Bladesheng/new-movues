@@ -2,12 +2,13 @@
 import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
-import type { Cast, Crew, Genre, Keyword, Network, Video } from 'tmdb-ts';
+import type { Cast, Crew, Genre, Images, Keyword, Network, Video } from 'tmdb-ts';
 import Tag from 'primevue/tag';
 import Knob from 'primevue/knob';
 import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 import CastList from '@/components/CastList.vue';
 import YoutubeTrailers from '@/components/YoutubeTrailers.vue';
+import ImagesGallery from '@/components/ImagesGallery.vue';
 
 const props = defineProps({
 	name: {
@@ -79,6 +80,11 @@ const props = defineProps({
 		required: true,
 		type: String,
 	},
+
+	images: {
+		required: true,
+		type: Object as PropType<Omit<Images, 'id'>>,
+	},
 });
 
 const ratingRounded = computed(() => {
@@ -143,6 +149,8 @@ const route = useRoute();
 
 			<strong class="block">Trailer</strong>
 			<YoutubeTrailers :videos="props.videos" />
+
+			<ImagesGallery :images="props.images" />
 
 			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 

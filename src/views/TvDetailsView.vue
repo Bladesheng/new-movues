@@ -96,6 +96,7 @@ async function getDetails() {
 					:cast="tmdbRes.credits.cast.slice(0, 10)"
 					:videos="tmdbRes.videos.results.filter((video) => video.site === 'YouTube')"
 					:imdbId="tmdbRes.external_ids.imdb_id"
+					:images="tmdbRes.images"
 				/>
 			</template>
 		</div>
