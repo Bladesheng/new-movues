@@ -31,12 +31,12 @@ const tvId = parseInt(route.params.id as string);
 getDetails();
 
 const runtimeText = computed(() => {
-	if (
-		tmdbRes.value === undefined ||
-		csfdMovie.value === undefined ||
-		csfdMovie.value.duration === null
-	) {
+	if (tmdbRes.value === undefined || csfdMovie.value === undefined) {
 		return undefined;
+	}
+
+	if (csfdMovie.value.duration === null) {
+		return '';
 	}
 
 	const runtimeTotal = Number(csfdMovie.value.duration);

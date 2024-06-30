@@ -135,7 +135,7 @@ const route = useRoute();
 					<div v-if="props.runtimeText === undefined">
 						<Skeleton width="10rem" height="1.5rem"></Skeleton>
 					</div>
-					<div v-else>{{ props.runtimeText }}</div>
+					<div v-else-if="props.runtimeText.length > 0">{{ props.runtimeText }}</div>
 
 					<div>
 						<strong>{{ props.createdBy.department }}: </strong>
