@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Card from 'primevue/card';
 import { useRoute } from 'vue-router';
 import { computed, type PropType } from 'vue';
 import type { Cast, Crew, Genre, Images, Keyword, Network, Video } from 'tmdb-ts';
@@ -96,92 +95,83 @@ const route = useRoute();
 </script>
 
 <template>
-	<Card
-		class="flex min-w-0 grow"
-		:pt="{
-			body: 'min-w-0',
-		}"
-	>
-		<template #content>
-			<div>{{ props.name }}</div>
+	<div class="flex flex-col">
+		<div>{{ props.name }}</div>
 
-			<div>
-				{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})
+		<div>{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})</div>
+
+		<div class="flex gap-2">
+			<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
+		</div>
+
+		<Knob v-model="ratingRounded" valueTemplate="{value}%" />
+
+		<em class="block text-gray-500">{{ props.tagline }}</em>
+
+		<strong class="block">Overview</strong>
+
+		<p>{{ props.overview }}</p>
+
+		<div>
+			<strong>{{ props.createdBy.name }}</strong>
+			<span>&nbsp;({{ props.createdBy.department }})</span>
+		</div>
+
+		<strong class="block">Keywords</strong>
+
+		<div class="flex flex-wrap gap-2">
+			<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
+		</div>
+
+		<template v-if="props.networks !== undefined">
+			<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
+
+			<div class="flex flex-col items-start gap-2">
+				<img
+					v-for="network in props.networks"
+					:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
+					:alt="network.name"
+					:title="network.name"
+				/>
 			</div>
+		</template>
 
-			<div class="flex gap-2">
-				<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
-			</div>
+		<strong class="block">Cast</strong>
+		<CastList :actors="props.cast" />
 
-			<Knob v-model="ratingRounded" valueTemplate="{value}%" />
+		<strong class="block">Trailer</strong>
+		<YoutubeTrailers :videos="props.videos" />
 
-			<em class="block text-gray-500">{{ props.tagline }}</em>
+		<ImagesGallery :images="props.images" />
 
-			<strong class="block">Overview</strong>
+		<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
 
-			<p>{{ props.overview }}</p>
+		<a :href="`https://www.themoviedb.org/tv/${route.params.id}`" target="_blank">
+			<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
+		</a>
 
-			<div>
-				<strong>{{ props.createdBy.name }}</strong>
-				<span>&nbsp;({{ props.createdBy.department }})</span>
-			</div>
+		<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
+			<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
+		</a>
 
-			<strong class="block">Keywords</strong>
+		<slot name="csfdCard" />
 
-			<div class="flex flex-wrap gap-2">
-				<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
-			</div>
-
-			<template v-if="props.networks !== undefined">
-				<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
-
-				<div class="flex flex-col items-start gap-2">
-					<img
-						v-for="network in props.networks"
-						:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
-						:alt="network.name"
-						:title="network.name"
-					/>
-				</div>
+		<Image preview>
+			<template #image>
+				<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
 			</template>
 
-			<strong class="block">Cast</strong>
-			<CastList :actors="props.cast" />
-
-			<strong class="block">Trailer</strong>
-			<YoutubeTrailers :videos="props.videos" />
-
-			<ImagesGallery :images="props.images" />
-
-			<div v-if="props.runtimeText?.length! > 0">{{ props.runtimeText }}</div>
-
-			<a :href="`https://www.themoviedb.org/tv/${route.params.id}`" target="_blank">
-				<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
-			</a>
-
-			<a :href="`https://www.imdb.com/title/${props.imdbId}`" target="_blank">
-				<img src="/imdbLogo.png" class="h-12" alt="imdb logo" />
-			</a>
-
-			<slot name="csfdCard" />
-
-			<Image preview>
-				<template #image>
-					<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
-				</template>
-
-				<template #preview="slotProps">
-					<img
-						:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
-						class="fullImage"
-						alt="poster"
-						:style="slotProps.style"
-						@click="slotProps.onClick"
-					/>
-				</template>
-			</Image>
-		</template>
-	</Card>
+			<template #preview="slotProps">
+				<img
+					:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
+					class="fullImage"
+					alt="poster"
+					:style="slotProps.style"
+					@click="slotProps.onClick"
+				/>
+			</template>
+		</Image>
+	</div>
 </template>
 
 <style scoped>
