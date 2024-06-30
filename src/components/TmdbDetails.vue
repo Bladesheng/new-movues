@@ -138,8 +138,8 @@ const route = useRoute();
 					<div v-else>{{ props.runtimeText }}</div>
 
 					<div>
-						<strong>{{ props.createdBy.name }}</strong>
-						<span>&nbsp;({{ props.createdBy.department }})</span>
+						<strong>{{ props.createdBy.department }}: </strong>
+						<span>{{ props.createdBy.name }}</span>
 					</div>
 
 					<div class="flex flex-col gap-0.5">
