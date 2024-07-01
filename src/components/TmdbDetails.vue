@@ -201,16 +201,22 @@ const route = useRoute();
 			</Card>
 
 			<template v-if="props.networks !== undefined">
-				<strong class="block">Network<span v-if="props.networks.length > 1">s</span></strong>
+				<Card>
+					<template #title>
+						<SectionHeading>Network<span v-if="props.networks.length > 1">s</span></SectionHeading>
+					</template>
 
-				<div class="flex flex-col items-start gap-2">
-					<img
-						v-for="network in props.networks"
-						:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
-						:alt="network.name"
-						:title="network.name"
-					/>
-				</div>
+					<template #content>
+						<div class="flex flex-col items-center gap-2">
+							<img
+								v-for="network in props.networks"
+								:src="`https://image.tmdb.org/t/p/w200${network.logo_path}`"
+								:alt="network.name"
+								:title="network.name"
+							/>
+						</div>
+					</template>
+				</Card>
 			</template>
 		</div>
 	</div>
