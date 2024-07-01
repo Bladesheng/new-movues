@@ -49,7 +49,7 @@ const props = defineProps({
 	},
 
 	createdBy: {
-		required: true,
+		required: false,
 		type: Object as PropType<Crew>,
 	},
 
@@ -137,7 +137,7 @@ const route = useRoute();
 					</div>
 					<div v-else-if="props.runtimeText.length > 0">{{ props.runtimeText }}</div>
 
-					<div>
+					<div v-if="props.createdBy !== undefined">
 						<strong>{{ props.createdBy.department }}: </strong>
 						<span>{{ props.createdBy.name }}</span>
 					</div>
