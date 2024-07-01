@@ -56,12 +56,15 @@ onMounted(async () => {
 	useInfiniteScroll(
 		window,
 		async () => {
-			if (!isMounted.value) return;
-
 			await loadNextPage();
 		},
 
-		{ distance: 400 }
+		{
+			distance: 400,
+			canLoadMore: () => {
+				return isMounted.value;
+			},
+		}
 	);
 
 	await loadNextPage();
@@ -136,7 +139,7 @@ async function checkIfMoreExist() {
 	const scrollbarExists = scrollHeight > clientHeight;
 	const morePagesExists = currentPage.value < totalPages.value;
 
-	if (!scrollbarExists && morePagesExists) {
+	if (!scrollbarExists && morePagesExists && isMounted.value) {
 		await loadNextPage();
 
 		await checkIfMoreExist();
