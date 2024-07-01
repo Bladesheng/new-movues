@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
-import { type AppendToResponse, type MovieDetails, TMDB } from 'tmdb-ts';
+import { type AppendToResponse, type MovieDetails } from 'tmdb-ts';
 import { computed, ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
 import { getCsfdMovie } from '@/api/csfdApi';
@@ -9,11 +8,10 @@ import CsfdDetails from '@/components/CsfdDetails.vue';
 import Skeleton from 'primevue/skeleton';
 import LoadingSpinner from '@/assets/LoadingSpinner.vue';
 import TmdbDetails from '@/components/TmdbDetails.vue';
+import { useTmdbInstance } from '@/stores/tmdbInstance';
 
 const route = useRoute();
-
-const tmdbAccessTokenStore = useTmdbAccessToken();
-const tmdb = new TMDB(tmdbAccessTokenStore.token);
+const tmdb = useTmdbInstance().tmdbInstance;
 
 const tmdbRes =
 	ref<

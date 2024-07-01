@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
-import { type Movie, type MovieDiscoverResult, type SortOption, TMDB } from 'tmdb-ts';
+import { type Movie, type MovieDiscoverResult, type SortOption } from 'tmdb-ts';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import PosterCard from '@/components/PosterCard.vue';
 import { useInfiniteScroll, useMounted, useStorage } from '@vueuse/core';
@@ -12,16 +11,14 @@ import SortOptions from '@/components/filters/SortOptions.vue';
 import SliderWithInput from '@/components/filters/SliderWithInput.vue';
 import Button from 'primevue/button';
 import { RouterLink } from 'vue-router';
-
-const tmdbAccessTokenStore = useTmdbAccessToken();
+import { useTmdbInstance } from '@/stores/tmdbInstance';
 
 const minPopularity = useStorage('minPopularityMovies', 0);
 const sortBy = useStorage<SortOption>('movieSortBy', 'primary_release_date.asc');
 const selectedGenres = ref<number[]>([]);
 const maxDaysOld = useStorage('movieMaxDaysOld', 1);
 
-const tmdb = new TMDB(tmdbAccessTokenStore.token);
-
+const tmdb = useTmdbInstance().tmdbInstance;
 const responses = ref<MovieDiscoverResult[]>([]);
 const currentPage = ref(0);
 const totalPages = ref(99);

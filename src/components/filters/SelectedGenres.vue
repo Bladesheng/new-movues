@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { TMDB } from 'tmdb-ts';
-import { useTmdbAccessToken } from '@/stores/tmdbAccessToken';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
+import { useTmdbInstance } from '@/stores/tmdbInstance';
 
 const props = defineProps<{
 	mediaType: 'movies' | 'tvShows';
@@ -13,10 +12,9 @@ const selectedGenres = defineModel<number[]>('selectedGenres', {
 	required: true,
 });
 
-const genres = ref<{ id: number; name: string }[]>([]);
+const tmdb = useTmdbInstance().tmdbInstance;
 
-const tmdbAccessTokenStore = useTmdbAccessToken();
-const tmdb = new TMDB(tmdbAccessTokenStore.token);
+const genres = ref<{ id: number; name: string }[]>([]);
 
 onMounted(async () => {
 	const genresResponse = await tmdb.genres[props.mediaType]({
