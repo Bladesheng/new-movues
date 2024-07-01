@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-	<div class="flex flex-col gap-2 text-gray-600">
+	<div class="flex flex-col gap-2 text-gray-600" v-if="props.actors.length > 0">
 		<SectionHeading>Cast</SectionHeading>
 
 		<ol class="flex gap-2 overflow-x-scroll">
