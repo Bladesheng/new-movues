@@ -45,7 +45,7 @@ async function fetchToken() {
 	<div class="flex flex-col gap-4 p-4 sm:flex-row">
 		<Card class="sm:w-1/2">
 			<template #title>
-				<div>Current token</div>
+				<div>Current TMDB API key</div>
 			</template>
 
 			<template #content>
@@ -57,19 +57,25 @@ async function fetchToken() {
 
 		<Card class="sm:w-1/2">
 			<template #title>
-				<label for="token">New token</label>
+				<label for="token">New TMDB API key</label>
 			</template>
 
 			<template #content>
-				<div class="flex flex-col gap-2">
-					<Textarea v-model="inputValue" rows="10" cols="30" id="token" />
+				<div class="flex flex-col gap-8">
+					<div class="flex flex-col gap-2">
+						<Textarea v-model="inputValue" rows="10" cols="30" id="token" />
 
-					<Button label="Save token" @click="saveToken" />
-				</div>
+						<Button label="Save" icon="pi pi-save" @click="saveToken" class="self-end p-2" />
+					</div>
 
-				<div class="mt-6 flex flex-col gap-2">
-					<strong>Fetch token from API</strong>
-					<Button icon="pi pi-lock" label="Fetch new token" @click="fetchToken" />
+					<div class="flex justify-center">
+						<Button
+							label="Fetch TMDB API key from webworker"
+							icon="pi pi-lock"
+							@click="fetchToken"
+							severity="secondary"
+						/>
+					</div>
 				</div>
 			</template>
 		</Card>
