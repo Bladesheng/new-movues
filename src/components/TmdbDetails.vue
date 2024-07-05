@@ -188,17 +188,19 @@ const route = useRoute();
 				</template>
 			</Card>
 
-			<Card class="textGray">
-				<template #title>
-					<SectionHeading>Keywords</SectionHeading>
-				</template>
+			<template v-if="props.keywords.length > 0">
+				<Card class="textGray">
+					<template #title>
+						<SectionHeading>Keywords</SectionHeading>
+					</template>
 
-				<template #content>
-					<div class="flex flex-wrap gap-2">
-						<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
-					</div>
-				</template>
-			</Card>
+					<template #content>
+						<div class="flex flex-wrap gap-2">
+							<Tag v-for="keyword in props.keywords" :value="keyword.name" severity="secondary" />
+						</div>
+					</template>
+				</Card>
+			</template>
 
 			<template v-if="props.networks !== undefined">
 				<Card class="textGray">
