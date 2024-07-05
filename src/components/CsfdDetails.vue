@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue';
 import type { CSFDMovie } from 'node-csfd-api/interfaces/movie.interface';
+import { useDark } from '@vueuse/core';
 
 const props = defineProps({
 	csfdMovie: {
@@ -12,10 +13,12 @@ const props = defineProps({
 const MAX_LENGTH = 150;
 
 const isExpanded = ref(false);
+
+const isDark = useDark();
 </script>
 
 <template>
-	<div>
+	<div class="csfdDetails" :class="{ dark: isDark }">
 		<div
 			class="grid grid-cols-3 items-center justify-items-center gap-4 text-nowrap rounded text-white"
 			:class="{
@@ -43,31 +46,43 @@ const isExpanded = ref(false);
 		<p v-if="props.csfdMovie.descriptions[0] !== undefined">
 			{{ props.csfdMovie.descriptions[0].substring(0, isExpanded ? Infinity : MAX_LENGTH) }}
 			<template v-if="!isExpanded && props.csfdMovie.descriptions[0].length > MAX_LENGTH">
-				<span>...</span>
-				<button @click="isExpanded = true">(<span class="textRed">více</span>)</button>
+				<span>... </span>
+				<button @click="isExpanded = true">(<span class="textGood">více</span>)</button>
 			</template>
 		</p>
 	</div>
 </template>
 
 <style scoped>
-.textRed {
-	color: #ba0305;
+.csfdDetails {
+	--csfd-good: #ba0305;
+	--csfd-average: #658db4;
+	--csfd-bad: #535353;
+	--csfd-unknown: #a4a4a4;
+}
+.csfdDetails.dark {
+	--csfd-good: #971311;
+	--csfd-bad: #494949;
+	--csfd-unknown: #000;
+}
+
+.textGood {
+	color: var(--csfd-good);
 }
 
 .colorGood {
-	background-color: #ba0305;
+	background-color: var(--csfd-good);
 }
 
 .colorAverage {
-	background-color: #658db4;
+	background-color: var(--csfd-average);
 }
 
 .colorBad {
-	background-color: #535353;
+	background-color: var(--csfd-bad);
 }
 
 .colorUnknown {
-	background-color: #a4a4a4;
+	background-color: var(--csfd-unknown);
 }
 </style>

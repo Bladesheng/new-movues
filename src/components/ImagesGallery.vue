@@ -58,7 +58,7 @@ const isModalVisible = ref(false);
 		:dismissableMask="true"
 		:closeOnEscape="true"
 		header="All images"
-		class="w-2/3"
+		class="textGray w-2/3"
 	>
 		<Tabs value="0" scrollable>
 			<TabList>

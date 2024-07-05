@@ -198,7 +198,7 @@ async function checkIfMoreExist() {
 							v-for="movie in filteredMovies"
 							:key="movie.id"
 							:to="{ name: 'movieDetails', params: { id: movie.id } }"
-							class="visited:text-gray-400"
+							class="visited:text-gray-400 dark:visited:text-gray-700"
 						>
 							<PosterCard
 								:releaseDate="new Date(movie.release_date)"

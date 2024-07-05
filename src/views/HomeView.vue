@@ -6,14 +6,14 @@ import { RouterLink } from 'vue-router';
 <template>
 	<main class="m-4 flex h-full flex-grow flex-col items-center justify-center gap-10 text-center">
 		<div class="flex flex-col items-center gap-4 text-5xl">
-			<div class="text-emerald-950">The all-in-one website</div>
+			<div class="text-emerald-950 dark:text-emerald-800">The all-in-one website</div>
 
 			<div class="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text pb-2 text-transparent">
 				for new Movies and TV shows
 			</div>
 		</div>
 
-		<div class="text-gray-600">
+		<div>
 			<div>
 				MoVues is a website that allows you to see what new movies and TV shows are airing right now
 				and what to look out for.

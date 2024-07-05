@@ -43,19 +43,19 @@ async function fetchToken() {
 
 <template>
 	<div class="flex flex-col gap-4 p-4 sm:flex-row">
-		<Card class="sm:w-1/2">
+		<Card class="textGray sm:w-1/2">
 			<template #title>
 				<div>Current TMDB API key</div>
 			</template>
 
 			<template #content>
-				<div class="text-gray-500" style="overflow-wrap: break-word">
+				<div style="overflow-wrap: break-word">
 					{{ tmdbAccessTokenStore.token }}
 				</div>
 			</template>
 		</Card>
 
-		<Card class="sm:w-1/2">
+		<Card class="textGray sm:w-1/2">
 			<template #title>
 				<label for="token">New TMDB API key</label>
 			</template>

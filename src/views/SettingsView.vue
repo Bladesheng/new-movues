@@ -7,7 +7,7 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 		<TmdbAccessTokenSettings />
 	</main>
 
-	<footer class="m-4 flex flex-col items-center gap-2 text-center text-gray-600">
+	<footer class="m-4 flex flex-col items-center gap-2 text-center">
 		<small>
 			Icons made from
 			<a class="underline" href="https://www.onlinewebfonts.com/icon" target="_blank">
@@ -21,7 +21,7 @@ import TmdbAccessTokenSettings from '@/components/TmdbAccessTokenSettings.vue';
 			<a
 				href="https://github.com/Bladesheng/new-movues"
 				target="_blank"
-				class="inline-flex items-center gap-1 text-black"
+				class="inline-flex items-center gap-1 text-black dark:text-gray-500"
 			>
 				<img src="/github-mark.svg" class="inline h-5" alt="github-mark" />
 				Bladesheng

@@ -121,7 +121,7 @@ const route = useRoute();
 					</template>
 				</Image>
 
-				<div class="flex flex-col gap-2 text-gray-600">
+				<div class="flex flex-col gap-2">
 					<SectionHeading class="text-4xl">{{ props.name }}</SectionHeading>
 
 					<div class="flex gap-2">
@@ -160,7 +160,7 @@ const route = useRoute();
 		</div>
 
 		<div class="flex shrink-0 flex-col items-stretch gap-4 sm:w-1/4 xl:w-1/5">
-			<Card>
+			<Card class="textGray">
 				<template #title>
 					<SectionHeading>Rating</SectionHeading>
 				</template>
@@ -188,7 +188,7 @@ const route = useRoute();
 				</template>
 			</Card>
 
-			<Card>
+			<Card class="textGray">
 				<template #title>
 					<SectionHeading>Keywords</SectionHeading>
 				</template>
@@ -201,7 +201,7 @@ const route = useRoute();
 			</Card>
 
 			<template v-if="props.networks !== undefined">
-				<Card>
+				<Card class="textGray">
 					<template #title>
 						<SectionHeading>Network<span v-if="props.networks.length > 1">s</span></SectionHeading>
 					</template>

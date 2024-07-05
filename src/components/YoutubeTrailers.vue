@@ -137,7 +137,7 @@ function startDrag(e: MouseEvent) {
 		:dismissableMask="true"
 		:closeOnEscape="true"
 		header="All videos"
-		class="w-2/3"
+		class="textGray w-2/3"
 	>
 		<Tabs value="0" scrollable>
 			<TabList>

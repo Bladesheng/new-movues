@@ -35,7 +35,9 @@ const props = defineProps({
 </script>
 
 <template>
-	<div class="group relative flex flex-col overflow-hidden rounded border border-gray-300">
+	<div
+		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-600"
+	>
 		<div class="relative flex flex-grow overflow-hidden">
 			<img
 				:src="`https://image.tmdb.org/t/p/w400${props.posterPath}`"

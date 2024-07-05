@@ -29,15 +29,15 @@ const { lengthX } = useSwipe(window, {
 
 <template>
 	<template v-if="isMobile">
-		<Drawer v-model:visible="isOpen" header="Filters">
-			<div class="flex flex-col gap-4 p-4 text-gray-600">
+		<Drawer v-model:visible="isOpen" header="Filters" class="textGray">
+			<div class="flex flex-col gap-4 p-4">
 				<slot />
 			</div>
 		</Drawer>
 	</template>
 
 	<template v-else>
-		<div v-if="isOpen" class="flex flex-col gap-4 p-4 text-gray-600">
+		<div v-if="isOpen" class="flex flex-col gap-4 p-4">
 			<div class="flex items-center justify-between">
 				<strong class="text-xl">Filters</strong>
 

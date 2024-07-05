@@ -28,8 +28,20 @@
 	}
 }
 
+html {
+	@apply textGray;
+}
+
+html.dark {
+}
+
 #app {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+}
+
+.textGray {
+	@apply text-gray-600;
+	@apply dark:text-gray-400;
 }

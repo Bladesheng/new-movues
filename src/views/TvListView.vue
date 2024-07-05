@@ -202,7 +202,7 @@ async function checkIfMoreExist() {
 							v-for="show in filteredShows"
 							:key="show.id"
 							:to="{ name: 'tvDetails', params: { id: show.id } }"
-							class="visited:text-gray-400"
+							class="visited:text-gray-400 dark:visited:text-gray-700"
 						>
 							<PosterCard
 								:releaseDate="new Date(show.first_air_date)"
