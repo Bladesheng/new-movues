@@ -21,8 +21,8 @@ const props = defineProps<{
 		<SelectButton
 			v-model="sortBy"
 			:options="props.sortByOptions"
-			:optionLabel="(data) => data.label"
-			:optionValue="(data) => data.value"
+			optionLabel="label"
+			optionValue="value"
 		/>
 	</div>
 </template>

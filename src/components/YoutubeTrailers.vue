@@ -3,7 +3,10 @@ import { computed, type PropType, ref } from 'vue';
 import type { Video } from 'tmdb-ts';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import TabView from 'primevue/tabview';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import YoutubeIframe from '@/components/YoutubeIframe.vue';
 import SectionHeading from '@/components/SectionHeading.vue';
@@ -136,17 +139,30 @@ function startDrag(e: MouseEvent) {
 		header="All videos"
 		class="w-2/3"
 	>
-		<TabView :scrollable="true">
-			<TabPanel
-				v-for="[groupName, videoGroup] in Object.entries(videoGroups)"
-				:key="groupName"
-				:header="`${groupName} (${videoGroup.length})`"
-			>
-				<div class="flex flex-col gap-12">
-					<YoutubeIframe v-for="video in videoGroup" :videoKey="video.key" />
-				</div>
-			</TabPanel>
-		</TabView>
+		<Tabs value="0" scrollable>
+			<TabList>
+				<Tab
+					v-for="([groupName, videoGroup], i) in Object.entries(videoGroups)"
+					:value="i.toString()"
+					:key="groupName"
+					class="capitalize"
+				>
+					{{ `${groupName} (${videoGroup.length})` }}
+				</Tab>
+			</TabList>
+
+			<TabPanels>
+				<TabPanel
+					v-for="([groupName, videoGroup], i) in Object.entries(videoGroups)"
+					:value="i.toString()"
+					:key="groupName"
+				>
+					<div class="flex flex-col gap-12">
+						<YoutubeIframe v-for="video in videoGroup" :videoKey="video.key" />
+					</div>
+				</TabPanel>
+			</TabPanels>
+		</Tabs>
 	</Dialog>
 </template>
 

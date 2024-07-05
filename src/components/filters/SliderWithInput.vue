@@ -56,7 +56,12 @@ function onWheel(e: WheelEvent) {
 		<div class="flex items-center gap-4">
 			<Slider v-model="currentValue" :min="props.min" :max="props.max" class="h-2 w-40" />
 
-			<InputNumber v-model="currentValue" :inputId="props.id" inputClass="w-14 h-10 text-center" />
+			<InputNumber
+				v-model="currentValue"
+				:inputId="props.id"
+				inputClass="w-14 h-10 text-center"
+				:useGrouping="false"
+			/>
 		</div>
 	</div>
 </template>

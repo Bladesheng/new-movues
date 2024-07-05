@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Sidebar from 'primevue/sidebar';
+import Drawer from 'primevue/drawer';
 import Button from 'primevue/button';
 import { useSwipe } from '@vueuse/core';
 
@@ -29,11 +29,11 @@ const { lengthX } = useSwipe(window, {
 
 <template>
 	<template v-if="isMobile">
-		<Sidebar v-model:visible="isOpen" header="Filters">
+		<Drawer v-model:visible="isOpen" header="Filters">
 			<div class="flex flex-col gap-4 p-4 text-gray-600">
 				<slot />
 			</div>
-		</Sidebar>
+		</Drawer>
 	</template>
 
 	<template v-else>

@@ -1,39 +1,49 @@
 <script setup lang="ts">
-import TabMenu from 'primevue/tabmenu';
 import { RouterLink, useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 import Button from 'primevue/button';
 
-// don't highlight anything initially
-const activeIndex = ref(-1);
-const route = useRoute();
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
 
-// PrimeVue for some reason is unable to resolve the initial route from vue-router
+const route = useRoute();
+const matchedRoute = ref('');
+
+// for primevue Tab Menu, we have to manually resolve the initial route
+// https://github.com/primefaces/primevue/issues/4739
 watch(
 	route,
 	() => {
-		const initialIndex = items.findIndex((item) => item.route.name === route.name);
-		activeIndex.value = initialIndex;
+		const initialTab = tabs.find((tab) => {
+			return route.path.startsWith(tab.route);
+		});
+
+		if (initialTab === undefined) {
+			return;
+		}
+
+		matchedRoute.value = initialTab.route;
 	},
 	{ once: true }
 );
 
-const items: MenuItem[] = [
+const tabs: MenuItem[] = [
 	{
 		label: 'Movies',
-		route: { name: 'movies' },
+		route: '/movies',
 	},
 	{
 		label: 'TV Shows',
-		route: { name: 'tv' },
+		route: '/tv',
 	},
 ];
 </script>
 
 <template>
 	<div class="flex items-center justify-between">
-		<RouterLink :to="{ name: 'home' }" @click="activeIndex = -1" class="w-1/3">
+		<RouterLink :to="{ name: 'home' }" @click="matchedRoute = ''" class="w-1/3">
 			<div class="ml-4 flex items-center gap-2 text-3xl font-bold text-gray-600">
 				<img src="/favicon.svg" alt="logo" class="h-14" />
 
@@ -43,23 +53,21 @@ const items: MenuItem[] = [
 			</div>
 		</RouterLink>
 
-		<TabMenu
-			:model="items"
-			v-model:activeIndex="activeIndex"
-			class="flex-shrink-0 sm:m-4"
-			:pt="{
-				menu: 'justify-center',
-				menuitem: 'p-0',
-			}"
-		>
-			<template #item="{ item, props }">
-				<RouterLink v-bind="props.action" :to="item.route" class="text-nowrap px-3 py-5 sm:p-5">
-					{{ item.label }}
-				</RouterLink>
-			</template>
-		</TabMenu>
+		<Tabs :value="matchedRoute">
+			<TabList>
+				<Tab v-for="tab in tabs" :key="tab.label" :value="tab.route" class="p-0">
+					<RouterLink :to="tab.route" @click="matchedRoute = tab.route" class="block p-4">
+						{{ tab.label }}
+					</RouterLink>
+				</Tab>
+			</TabList>
+		</Tabs>
 
-		<RouterLink :to="{ name: 'settings' }" @click="activeIndex = -1" class="flex w-1/3 justify-end">
+		<RouterLink
+			:to="{ name: 'settings' }"
+			@click="matchedRoute = ''"
+			class="flex w-1/3 justify-end"
+		>
 			<Button
 				icon="pi pi-cog"
 				:severity="route.name === 'settings' ? '' : 'secondary'"
