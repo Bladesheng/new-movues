@@ -21,3 +21,7 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+
+## Stable release PR
+
+https://github.com/Bladesheng/new-movues/compare/stable...main?quick_pull=1&title=Stable+release
