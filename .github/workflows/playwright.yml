@@ -30,6 +30,9 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
 
+      - name: run dev server (test)
+        run: npm run dev
+
       - name: Run Playwright tests
         run: pnpm run pw
 
