@@ -37,6 +37,7 @@ const props = defineProps({
 <template>
 	<div
 		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-600"
+		data-testid="posterCard"
 	>
 		<div class="relative flex flex-grow overflow-hidden">
 			<img
@@ -48,7 +49,11 @@ const props = defineProps({
 			<div
 				class="absolute bottom-0 left-0 rounded-tr bg-black bg-opacity-50 px-1 py-0.5 text-white"
 			>
-				<span v-if="props.voteAverage > 0 && props.voteCount > 5" class="group-hover:hidden">
+				<span
+					v-if="props.voteAverage > 0 && props.voteCount > 5"
+					class="group-hover:hidden"
+					title="Rating"
+				>
 					<i class="pi pi-star-fill text-yellow-500"></i>
 
 					{{ Math.round(props.voteAverage * 10) / 10 }}
@@ -72,7 +77,11 @@ const props = defineProps({
 			</span>
 		</div>
 
-		<div class="flex h-12 items-center justify-center text-center text-sm" :title="props.name">
+		<div
+			class="flex h-12 items-center justify-center text-center text-sm"
+			:title="props.name"
+			aria-label="title name"
+		>
 			{{ props.name }}
 		</div>
 	</div>

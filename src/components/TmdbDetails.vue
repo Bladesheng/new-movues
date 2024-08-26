@@ -125,10 +125,15 @@ const route = useRoute();
 					<SectionHeading class="text-4xl">{{ props.name }}</SectionHeading>
 
 					<div class="flex gap-2">
-						<Tag v-for="genre in props.genres" :value="genre.name" severity="secondary" />
+						<Tag
+							v-for="genre in props.genres"
+							:value="genre.name"
+							severity="secondary"
+							title="Genre"
+						/>
 					</div>
 
-					<div>
+					<div title="Release date">
 						{{ getFullDateFormatted(props.releaseDate) }} ({{ getDaysLeft(props.releaseDate) }})
 					</div>
 
@@ -172,7 +177,7 @@ const route = useRoute();
 								<img src="/tmdbLogoPrimaryShort.svg" class="h-12" alt="tmdb logo" />
 							</a>
 
-							<strong class="text-nowrap text-4xl">{{ ratingRounded }}%</strong>
+							<strong class="text-nowrap text-4xl" title="TMDB rating">{{ ratingRounded }}%</strong>
 						</div>
 
 						<a

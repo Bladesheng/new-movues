@@ -70,7 +70,7 @@ const tabs: MenuItem[] = [
 		<div class="flex justify-self-end sm:gap-2">
 			<DarkmodeToggleButton />
 
-			<RouterLink :to="{ name: 'settings' }" @click="matchedRoute = ''">
+			<RouterLink :to="{ name: 'settings' }" @click="matchedRoute = ''" title="Settings">
 				<Button
 					icon="pi pi-cog"
 					:severity="route.name === 'settings' ? '' : 'secondary'"

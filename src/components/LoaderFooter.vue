@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-	<div class="flex flex-grow justify-center p-4">
+	<div class="flex flex-grow justify-center p-4" data-testid="loadingSpinner">
 		<LoadingSpinner v-if="props.isLoadingMore" class="h-10 w-10 text-emerald-500" />
 		<div v-else class="text-gray-400">That's all...</div>
 	</div>

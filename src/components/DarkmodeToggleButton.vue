@@ -14,6 +14,7 @@ const toggleDark = useToggle(isDark);
 		iconClass="text-xl"
 		rounded
 		text
+		title="Toggle darkmode"
 	/>
 </template>
 

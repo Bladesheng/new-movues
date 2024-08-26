@@ -32,7 +32,7 @@ const isDark = useDark();
 				<img class="h-16 w-16" src="/csfdLogo.svg" alt="csfd logo" />
 			</a>
 
-			<strong class="text-4xl">{{ props.csfdMovie.rating ?? '? ' }}%</strong>
+			<strong class="text-4xl" title="CSFD rating">{{ props.csfdMovie.rating ?? '? ' }}%</strong>
 
 			<span v-if="props.csfdMovie.rating !== null" class="mr-2 text-xl">
 				({{ props.csfdMovie.ratingCount }})
