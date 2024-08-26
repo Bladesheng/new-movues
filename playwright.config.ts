@@ -64,10 +64,9 @@ export default defineConfig({
 
 	/* Run your local dev server before starting the tests */
 	webServer: {
-		// command: 'npm run build-only && npm run preview',
 		command: 'npm run dev',
-		// url: 'http://localhost:5173',
-		port: 5179,
+		url: 'http://localhost:5179',
+		// port: 5179,
 		reuseExistingServer: !process.env.CI,
 		stdout: 'pipe',
 	},
