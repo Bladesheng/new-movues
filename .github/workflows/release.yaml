@@ -2,7 +2,11 @@ name: Cloudflare Pages build and deployment
 
 on:
   push:
-    branches: [stable]
+    branches:
+      # Don't forget to set correct production branch:
+      # https://developers.cloudflare.com/pages/configuration/branch-build-controls/#production-branch-control
+      - '*'
+
   # manual trigger
   workflow_dispatch:
 
