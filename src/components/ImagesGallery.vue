@@ -39,13 +39,12 @@ const isModalVisible = ref(false);
 					<img :src="`https://image.tmdb.org/t/p/w1280${img.file_path}`" alt="" />
 				</template>
 
-				<template #preview="slotProps">
+				<template #original="slotProps">
 					<img
 						:src="`https://image.tmdb.org/t/p/original${img.file_path}`"
 						class="fullImage"
 						alt=""
 						:style="slotProps.style"
-						@click="slotProps.onClick"
 					/>
 				</template>
 			</Image>

@@ -18,7 +18,7 @@ const genres = ref<{ id: number; name: string }[]>([]);
 
 onMounted(async () => {
 	const genresResponse = await tmdb.genres[props.mediaType]({
-		language: 'en',
+		language: 'en-US',
 	});
 
 	genres.value = genresResponse.genres;

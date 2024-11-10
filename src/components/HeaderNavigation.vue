@@ -55,7 +55,7 @@ const tabs: MenuItem[] = [
 
 		<Tabs :value="matchedRoute" class="justify-self-center">
 			<TabList>
-				<Tab v-for="tab in tabs" :key="tab.label" :value="tab.route" class="p-0">
+				<Tab v-for="tab in tabs" :key="tab.route" :value="tab.route" class="p-0">
 					<RouterLink
 						:to="tab.route"
 						@click="matchedRoute = tab.route"

@@ -110,13 +110,12 @@ const route = useRoute();
 						<img :src="`https://image.tmdb.org/t/p/w400${props.posterPath}`" alt="poster" />
 					</template>
 
-					<template #preview="slotProps">
+					<template #original="slotProps">
 						<img
 							:src="`https://image.tmdb.org/t/p/original${props.posterPath}`"
 							class="fullImage"
 							alt="poster"
 							:style="slotProps.style"
-							@click="slotProps.onClick"
 						/>
 					</template>
 				</Image>
