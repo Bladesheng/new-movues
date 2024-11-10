@@ -10,11 +10,7 @@
 		"build-only": "vite build",
 		"type-check": "vue-tsc --build --force",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-		"format": "prettier --write --ignore-path .eslintignore ./",
-		"pw": "playwright test",
-		"pw:report": "playwright show-report",
-		"pw:ui": "playwright test --ui",
-		"pw:codegen": "playwright codegen"
+		"format": "prettier --write --ignore-path .eslintignore ./"
 	},
 	"dependencies": {
 		"@primevue/themes": "4.0.0",
@@ -27,7 +23,6 @@
 		"vue-router": "^4.3.0"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.46.1",
 		"@rushstack/eslint-patch": "^1.8.0",
 		"@tsconfig/node20": "^20.1.4",
 		"@types/node": "^20.12.5",

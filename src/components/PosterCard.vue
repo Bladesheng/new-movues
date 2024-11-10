@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getFullDateFormatted, getDaysLeft } from '@/utils/date';
+import { getDaysLeft, getFullDateFormatted } from '@/utils/date';
 
 const props = defineProps({
 	releaseDate: {
@@ -37,7 +37,6 @@ const props = defineProps({
 <template>
 	<div
 		class="group relative flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-600"
-		data-testid="posterCard"
 	>
 		<div class="relative flex flex-grow overflow-hidden">
 			<img

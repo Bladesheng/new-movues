@@ -49,7 +49,7 @@ async function fetchToken() {
 			</template>
 
 			<template #content>
-				<div style="overflow-wrap: break-word" data-testid="currentKey">
+				<div style="overflow-wrap: break-word">
 					{{ tmdbAccessTokenStore.token }}
 				</div>
 			</template>
