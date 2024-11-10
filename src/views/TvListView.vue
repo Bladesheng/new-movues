@@ -192,7 +192,7 @@ async function checkIfMoreExist() {
 						severity="secondary"
 						iconClass="text-xl"
 						size="small"
-						@click="isSidebarOpen = true"
+						@click="isSidebarOpen = !isSidebarOpen"
 					/>
 				</div>
 
