@@ -41,7 +41,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build the Application
-        run: pnpm run build-only
+        run: pnpm run build
 
       # Note: there cannot be top level 404.html or SPA rendering won't work because Cloudflare pages will look for non-existing .html files
       # https://developers.cloudflare.com/pages/configuration/serving-pages/#single-page-application-spa-rendering
